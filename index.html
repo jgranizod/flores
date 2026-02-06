@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atelier Floral — Inicio</title>
+  <title>Girasol Atelier — Inicio</title>
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-  <header class="header">
-    <div class="container header-grid">
+
+  <header class="header sunflower-header">
+    <div class="container header-stack">
       <div class="brand">
-        <div class="brand-name">Atelier Floral</div>
-        <div class="brand-sub">arreglos únicos & piezas a medida</div>
+        <div class="brand-name">Girasol Atelier 🌻</div>
+        <div class="brand-sub">arreglos a medida · inspiración floral</div>
       </div>
-      <nav class="nav">
+      <nav class="nav pills">
         <a href="index.html" class="activo">Inicio</a>
         <a href="catalogo.html">Catálogo</a>
       </nav>
@@ -25,38 +26,42 @@
   </header>
 
   <main>
-    <section class="hero editorial-hero">
-      <div class="hero-copy">
-        <p class="eyebrow">ARREGLOS FLORALES</p>
-        <h1>Elige el estilo que te inspira. Nosotros lo creamos.</h1>
-        <p class="lead">Cada pieza es única. Tu selección sirve como referencia para conversar y diseñar el arreglo ideal según colores y disponibilidad.</p>
+    <section class="hero sunflower-hero">
+      <div class="hero-card">
+        <p class="eyebrow">CATÁLOGO DE REFERENCIA ✨</p>
+        <h1>Elige el estilo que te enamora. Nosotros lo creamos.</h1>
+        <p class="lead">Cada arreglo es único. Tu selección sirve como guía para diseñar el tuyo según colores y temporada.</p>
         <div class="hero-cta">
-          <a class="btn-primary" href="catalogo.html">Ver catálogo</a>
+          <a class="btn-primary" href="catalogo.html">Ver catálogo 🌼</a>
           <button class="btn-ghost" onclick="toggleCarrito()">Ver mis selecciones</button>
         </div>
       </div>
-      <div class="hero-art"></div>
+      <div class="hero-art">
+        <div class="sunburst"></div>
+        <div class="hero-flower">🌻</div>
+        <div class="hero-note">Diseño artesanal</div>
+      </div>
     </section>
 
-    <section class="container section editorial-grid">
-      <div class="panel">
+    <section class="container section mosaic">
+      <div class="mosaic-card">
         <h2>Diseño a medida</h2>
-        <p>Nos guiamos por la inspiración que elijas y ajustamos tonos, tamaño y detalles según la ocasión.</p>
+        <p>Escoges inspiración, nosotros ajustamos tonos y detalles.</p>
       </div>
-      <div class="panel">
-        <h2>Calidad premium</h2>
-        <p>Flores seleccionadas y montaje artesanal para lograr un resultado elegante y duradero.</p>
+      <div class="mosaic-card">
+        <h2>Colores de temporada</h2>
+        <p>Proponemos combinaciones frescas según disponibilidad.</p>
       </div>
-      <div class="panel">
-        <h2>Contacto directo</h2>
-        <p>Al finalizar tu selección te enviamos por WhatsApp el resumen con fotos.</p>
+      <div class="mosaic-card">
+        <h2>Entrega acordada</h2>
+        <p>Coordinamos contigo para que sea perfecto.</p>
       </div>
     </section>
 
     <section class="container section">
-      <div class="section-head">
-        <h2>Destacados de la temporada</h2>
-        <p>Ideas que sirven de referencia para construir tu arreglo ideal.</p>
+      <div class="section-head alt">
+        <h2>Destacados del día</h2>
+        <p>Ideas listas para inspirarte.</p>
       </div>
       <div id="destacados" class="grid">
         <div class="producto skeleton-card"></div>
@@ -65,7 +70,7 @@
         <div class="producto skeleton-card"></div>
       </div>
       <div class="center">
-        <a href="catalogo.html" class="btn-primary">Ir al catálogo completo</a>
+        <a href="catalogo.html" class="btn-primary">Explorar catálogo completo</a>
       </div>
     </section>
   </main>
@@ -92,7 +97,7 @@
       <div class="carrito-acciones">
         <button onclick="toggleCarrito()" class="btn-ghost">Seguir mirando</button>
         <button onclick="vaciarCarrito()" class="btn-danger">Vaciar</button>
-        <button onclick="checkoutWhatsApp()" class="btn-primary">Enviar selección por WhatsApp</button>
+        <button onclick="checkoutWhatsApp()" class="btn-primary">Enviar por WhatsApp 💬</button>
       </div>
     </div>
   </div>
@@ -111,7 +116,7 @@
             <span id="modal-precio" class="precio"></span>
           </div>
           <div class="modal-acciones">
-            <button id="modal-agregar" class="btn-primary">Me interesa 💐</button>
+            <button id="modal-agregar" class="btn-primary">Me interesa 🌻</button>
           </div>
         </div>
       </div>
@@ -119,7 +124,7 @@
   </div>
 
   <footer class="footer">
-    <p>© 2024 Atelier Floral — Diseños únicos</p>
+    <p>© 2024 Girasol Atelier — Arreglos únicos</p>
   </footer>
 
   <script type="module">
