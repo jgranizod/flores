@@ -3,23 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo — Atelier Floral</title>
+  <title>Catálogo — Girasol Atelier</title>
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
 
-  <header class="header">
-    <div class="container header-grid">
+  <header class="header sunflower-header">
+    <div class="container header-stack">
       <div class="brand">
-        <div class="brand-name">Atelier Floral</div>
+        <div class="brand-name">Girasol Atelier 🌻</div>
         <div class="brand-sub">arreglos únicos & piezas a medida</div>
       </div>
-
-      <nav class="nav">
+      <nav class="nav pills">
         <a href="index.html">Inicio</a>
         <a href="catalogo.html" class="activo">Catálogo</a>
       </nav>
-
       <div class="header-actions">
         <button id="theme-toggle" class="btn-ghost">Modo oscuro 🌙</button>
         <button class="carrito-btn" onclick="toggleCarrito()">Mis selecciones <span id="carrito-count" class="carrito-count">0</span></button>
@@ -28,12 +26,12 @@
   </header>
 
   <main class="container section">
-    <div class="section-head">
-      <h1>Catálogo de arreglos</h1>
-      <p>Elige los estilos que te gustan y envíalos por WhatsApp con foto incluida.</p>
+    <div class="section-head alt">
+      <h1>Catálogo de arreglos 🌼</h1>
+      <p>Selecciona estilos, envíalos por WhatsApp y ajustamos colores contigo.</p>
     </div>
 
-    <div class="filters-card">
+    <div class="filters-card sunflower-filters">
       <input id="buscador" type="text" placeholder="Buscar por nombre" class="input-busqueda">
       <div class="filtro-precio">
         <label>Precio máx:</label>
@@ -90,7 +88,7 @@
       <div class="carrito-acciones">
         <button onclick="toggleCarrito()" class="btn-ghost">Seguir mirando</button>
         <button onclick="vaciarCarrito()" class="btn-danger">Vaciar</button>
-        <button onclick="checkoutWhatsApp()" class="btn-primary">Enviar selección por WhatsApp</button>
+        <button onclick="checkoutWhatsApp()" class="btn-primary">Enviar por WhatsApp 💬</button>
       </div>
     </div>
   </div>
@@ -109,7 +107,7 @@
             <span id="modal-precio" class="precio"></span>
           </div>
           <div class="modal-acciones">
-            <button id="modal-agregar" class="btn-primary">Me interesa 💐</button>
+            <button id="modal-agregar" class="btn-primary">Me interesa 🌻</button>
           </div>
         </div>
       </div>
@@ -117,7 +115,7 @@
   </div>
 
   <footer class="footer">
-    <p>© 2024 Atelier Floral — Diseños únicos</p>
+    <p>© 2024 Girasol Atelier — Arreglos únicos</p>
   </footer>
 
   <script type="module">
@@ -203,7 +201,7 @@
             <span class="categoria-tag">${p.categoria || "General"}</span>
             <h3>${nombre}</h3>
             <div class="precio-container"><span class="precio">$${parseFloat(p.Precio || 0).toFixed(2)}</span></div>
-            <button class="btn-carrito" onclick="agregarAlCarrito('${p.id}', '${nombreEscapado}', ${p.Precio || 0}, '${p.imagen}')">Me interesa 💐</button>
+            <button class="btn-carrito" onclick="agregarAlCarrito('${p.id}', '${nombreEscapado}', ${p.Precio || 0}, '${p.imagen}')">Me interesa 🌻</button>
           </div>
         `;
 
