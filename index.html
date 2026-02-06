@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atelier Floral — Inicio</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-grid">
+      <div class="brand">
+        <div class="brand-name">Atelier Floral</div>
+        <div class="brand-sub">arreglos únicos & piezas a medida</div>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="activo">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn-ghost">Modo oscuro 🌙</button>
+        <button class="carrito-btn" onclick="toggleCarrito()">Mis selecciones <span id="carrito-count" class="carrito-count">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero editorial-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">ARREGLOS FLORALES</p>
+        <h1>Elige el estilo que te inspira. Nosotros lo creamos.</h1>
+        <p class="lead">Cada pieza es única. Tu selección sirve como referencia para conversar y diseñar el arreglo ideal según colores y disponibilidad.</p>
+        <div class="hero-cta">
+          <a class="btn-primary" href="catalogo.html">Ver catálogo</a>
+          <button class="btn-ghost" onclick="toggleCarrito()">Ver mis selecciones</button>
+        </div>
+      </div>
+      <div class="hero-art"></div>
+    </section>
+
+    <section class="container section editorial-grid">
+      <div class="panel">
+        <h2>Diseño a medida</h2>
+        <p>Nos guiamos por la inspiración que elijas y ajustamos tonos, tamaño y detalles según la ocasión.</p>
+      </div>
+      <div class="panel">
+        <h2>Calidad premium</h2>
+        <p>Flores seleccionadas y montaje artesanal para lograr un resultado elegante y duradero.</p>
+      </div>
+      <div class="panel">
+        <h2>Contacto directo</h2>
+        <p>Al finalizar tu selección te enviamos por WhatsApp el resumen con fotos.</p>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div class="section-head">
+        <h2>Destacados de la temporada</h2>
+        <p>Ideas que sirven de referencia para construir tu arreglo ideal.</p>
+      </div>
+      <div id="destacados" class="grid">
+        <div class="producto skeleton-card"></div>
+        <div class="producto skeleton-card"></div>
+        <div class="producto skeleton-card"></div>
+        <div class="producto skeleton-card"></div>
+      </div>
+      <div class="center">
+        <a href="catalogo.html" class="btn-primary">Ir al catálogo completo</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Carrito -->
+  <div id="carrito-overlay"></div>
+  <div id="carrito-sidebar">
+    <div class="carrito-header">
+      <h2>Mis selecciones</h2>
+      <button class="carrito-close" onclick="toggleCarrito()">&times;</button>
+    </div>
+    <div id="carrito-items"></div>
+    <div id="carrito-footer" style="display:none;">
+      <div class="carrito-resumen">
+        <div class="carrito-resumen-linea"><span>Subtotal</span><span id="carrito-subtotal">$0.00</span></div>
+        <div class="carrito-resumen-linea"><span>Envío</span><span id="carrito-envio">$0.00</span></div>
+        <div class="carrito-resumen-linea"><span>Impuestos</span><span id="carrito-impuestos">$0.00</span></div>
+        <div class="carrito-resumen-linea"><span>Items</span><span id="carrito-items-count">0</span></div>
+      </div>
+      <div class="carrito-total-container">
+        <span class="carrito-total-label">Total:</span>
+        <span id="carrito-total">$0.00</span>
+      </div>
+      <div class="carrito-acciones">
+        <button onclick="toggleCarrito()" class="btn-ghost">Seguir mirando</button>
+        <button onclick="vaciarCarrito()" class="btn-danger">Vaciar</button>
+        <button onclick="checkoutWhatsApp()" class="btn-primary">Enviar selección por WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="producto-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button id="modal-cerrar" class="modal-close" type="button" aria-label="Cerrar">&times;</button>
+      <div class="modal-body">
+        <img id="modal-imagen" class="modal-img" src="" alt="Producto">
+        <div class="modal-info">
+          <span id="modal-categoria" class="categoria-tag"></span>
+          <h3 id="modal-title"></h3>
+          <p id="modal-descripcion" class="modal-descripcion"></p>
+          <div class="precio-container">
+            <span id="modal-precio" class="precio"></span>
+          </div>
+          <div class="modal-acciones">
+            <button id="modal-agregar" class="btn-primary">Me interesa 💐</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2024 Atelier Floral — Diseños únicos</p>
+  </footer>
+
+  <script type="module">
+    import { db } from "./js/firebase.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const modal = document.getElementById("producto-modal");
+    const modalImagen = document.getElementById("modal-imagen");
+    const modalCategoria = document.getElementById("modal-categoria");
+    const modalTitulo = document.getElementById("modal-title");
+    const modalDescripcion = document.getElementById("modal-descripcion");
+    const modalPrecio = document.getElementById("modal-precio");
+    const btnModalAgregar = document.getElementById("modal-agregar");
+    let productoActual = null;
+
+    function abrirModal(p) {
+      modalImagen.src = p.imagen || "";
+      modalImagen.alt = p.Nombre || "Producto";
+      modalCategoria.textContent = p.categoria || "General";
+      modalTitulo.textContent = p.Nombre || "";
+      modalDescripcion.textContent = p.descripcion || p.Descripcion || "Sin descripcion.";
+      modalPrecio.textContent = "$" + parseFloat(p.Precio || 0).toFixed(2);
+      productoActual = p;
+      modal.classList.add("activo");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function cerrarModal() {
+      modal.classList.remove("activo");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("modal-cerrar").addEventListener("click", cerrarModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModal(); });
+
+    btnModalAgregar.addEventListener("click", () => {
+      if (!productoActual) return;
+      agregarAlCarrito(
+        productoActual.id,
+        productoActual.Nombre || "",
+        productoActual.Precio || 0,
+        productoActual.imagen || ""
+      );
+      cerrarModal();
+    });
+
+    async function cargarDestacados() {
+      const contenedor = document.getElementById("destacados");
+      try {
+        const snapshot = await getDocs(collection(db, "productos"));
+        contenedor.innerHTML = "";
+
+        let count = 0;
+        snapshot.forEach((doc) => {
+          if (count < 4) {
+            const p = doc.data();
+            const card = document.createElement("div");
+            card.className = "producto";
+            card.innerHTML = `
+              <img src="${p.imagen}" alt="${p.Nombre}" class="producto-img">
+              <div class="producto-info">
+                <span class="categoria-tag">${p.categoria || "General"}</span>
+                <h3>${p.Nombre}</h3>
+                <div class="precio-container"><span class="precio">$${parseFloat(p.Precio || 0).toFixed(2)}</span></div>
+                <button class="btn-detalles">Ver detalles</button>
+              </div>
+            `;
+            card.querySelector(".btn-detalles").addEventListener("click", (e) => {
+              e.stopPropagation();
+              abrirModal(p);
+            });
+            contenedor.appendChild(card);
+            count++;
+          }
+        });
+
+        if (count === 0) {
+          contenedor.innerHTML = '<p class="loading">No hay productos disponibles</p>';
+        }
+      } catch {
+        contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
+      }
+    }
+
+    cargarDestacados();
+  </script>
+
+  <script type="module" src="js/carrito.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>

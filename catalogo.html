@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo — Atelier Floral</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-grid">
+      <div class="brand">
+        <div class="brand-name">Atelier Floral</div>
+        <div class="brand-sub">arreglos únicos & piezas a medida</div>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html">Inicio</a>
+        <a href="catalogo.html" class="activo">Catálogo</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn-ghost">Modo oscuro 🌙</button>
+        <button class="carrito-btn" onclick="toggleCarrito()">Mis selecciones <span id="carrito-count" class="carrito-count">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container section">
+    <div class="section-head">
+      <h1>Catálogo de arreglos</h1>
+      <p>Elige los estilos que te gustan y envíalos por WhatsApp con foto incluida.</p>
+    </div>
+
+    <div class="filters-card">
+      <input id="buscador" type="text" placeholder="Buscar por nombre" class="input-busqueda">
+      <div class="filtro-precio">
+        <label>Precio máx:</label>
+        <input id="precio-max" type="range" min="0" max="200" value="200">
+        <span id="precio-max-label">$200</span>
+      </div>
+      <select id="ordenar" class="select-orden">
+        <option value="nuevo">Ordenar: Nuevo</option>
+        <option value="precio-asc">Precio: Menor a mayor</option>
+        <option value="precio-desc">Precio: Mayor a menor</option>
+      </select>
+    </div>
+
+    <div class="resultados-bar">
+      <span id="result-count">0 productos</span>
+      <button id="limpiar-filtros" class="btn-ghost">Limpiar filtros</button>
+    </div>
+
+    <div class="filtros">
+      <button class="filtro-btn activo" onclick="filtrar('todos')">Todos</button>
+      <button class="filtro-btn" onclick="filtrar('rosas')">Rosas</button>
+      <button class="filtro-btn" onclick="filtrar('tulipanes')">Tulipanes</button>
+      <button class="filtro-btn" onclick="filtrar('mixtos')">Mixtos</button>
+      <button class="filtro-btn" onclick="filtrar('premium')">Premium</button>
+    </div>
+
+    <div id="productos" class="grid">
+      <div class="producto skeleton-card"></div>
+      <div class="producto skeleton-card"></div>
+      <div class="producto skeleton-card"></div>
+      <div class="producto skeleton-card"></div>
+    </div>
+  </main>
+
+  <!-- Carrito -->
+  <div id="carrito-overlay"></div>
+  <div id="carrito-sidebar">
+    <div class="carrito-header">
+      <h2>Mis selecciones</h2>
+      <button class="carrito-close" onclick="toggleCarrito()">&times;</button>
+    </div>
+    <div id="carrito-items"></div>
+    <div id="carrito-footer" style="display:none;">
+      <div class="carrito-resumen">
+        <div class="carrito-resumen-linea"><span>Subtotal</span><span id="carrito-subtotal">$0.00</span></div>
+        <div class="carrito-resumen-linea"><span>Envío</span><span id="carrito-envio">$0.00</span></div>
+        <div class="carrito-resumen-linea"><span>Impuestos</span><span id="carrito-impuestos">$0.00</span></div>
+        <div class="carrito-resumen-linea"><span>Items</span><span id="carrito-items-count">0</span></div>
+      </div>
+      <div class="carrito-total-container">
+        <span class="carrito-total-label">Total:</span>
+        <span id="carrito-total">$0.00</span>
+      </div>
+      <div class="carrito-acciones">
+        <button onclick="toggleCarrito()" class="btn-ghost">Seguir mirando</button>
+        <button onclick="vaciarCarrito()" class="btn-danger">Vaciar</button>
+        <button onclick="checkoutWhatsApp()" class="btn-primary">Enviar selección por WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="producto-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button id="modal-cerrar" class="modal-close" type="button" aria-label="Cerrar">&times;</button>
+      <div class="modal-body">
+        <img id="modal-imagen" class="modal-img" src="" alt="Producto">
+        <div class="modal-info">
+          <span id="modal-categoria" class="categoria-tag"></span>
+          <h3 id="modal-title"></h3>
+          <p id="modal-descripcion" class="modal-descripcion"></p>
+          <div class="precio-container">
+            <span id="modal-precio" class="precio"></span>
+          </div>
+          <div class="modal-acciones">
+            <button id="modal-agregar" class="btn-primary">Me interesa 💐</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2024 Atelier Floral — Diseños únicos</p>
+  </footer>
+
+  <script type="module">
+    import { db } from "./js/firebase.js";
+    import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    let todosLosProductos = [];
+    let categoriaActual = "todos";
+    let textoBusqueda = "";
+    let precioMax = 200;
+    let ordenActual = "nuevo";
+    let productoActual = null;
+
+    const modal = document.getElementById("producto-modal");
+    const modalImagen = document.getElementById("modal-imagen");
+    const modalCategoria = document.getElementById("modal-categoria");
+    const modalTitulo = document.getElementById("modal-title");
+    const modalDescripcion = document.getElementById("modal-descripcion");
+    const modalPrecio = document.getElementById("modal-precio");
+    const btnModalAgregar = document.getElementById("modal-agregar");
+    const resultCount = document.getElementById("result-count");
+    const btnLimpiar = document.getElementById("limpiar-filtros");
+
+    function abrirModal(p) {
+      modalImagen.src = p.imagen || "";
+      modalImagen.alt = p.Nombre || "Producto";
+      modalCategoria.textContent = p.categoria || "General";
+      modalTitulo.textContent = p.Nombre || "";
+      modalDescripcion.textContent = p.descripcion || p.Descripcion || "Sin descripcion.";
+      modalPrecio.textContent = "$" + parseFloat(p.Precio || 0).toFixed(2);
+      productoActual = p;
+      modal.classList.add("activo");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function cerrarModal() {
+      modal.classList.remove("activo");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("modal-cerrar").addEventListener("click", cerrarModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModal(); });
+
+    btnModalAgregar.addEventListener("click", () => {
+      if (!productoActual) return;
+      agregarAlCarrito(
+        productoActual.id,
+        productoActual.Nombre || "",
+        productoActual.Precio || 0,
+        productoActual.imagen || ""
+      );
+      cerrarModal();
+    });
+
+    function ordenarProductos(lista) {
+      const copia = lista.slice();
+      if (ordenActual === "precio-asc") copia.sort((a, b) => (a.Precio || 0) - (b.Precio || 0));
+      else if (ordenActual === "precio-desc") copia.sort((a, b) => (b.Precio || 0) - (a.Precio || 0));
+      return copia;
+    }
+
+    function mostrarProductos(productos) {
+      const contenedor = document.getElementById("productos");
+      if (productos.length === 0) {
+        contenedor.innerHTML = '<p class="loading">No hay productos en esta categoria</p>';
+        return;
+      }
+
+      contenedor.innerHTML = "";
+      productos.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "producto";
+        const nombre = p.Nombre || "";
+        const nombreEscapado = nombre.replace(/'/g, "\\'");
+
+        card.innerHTML = `
+          <img src="${p.imagen}" alt="${nombre}" class="producto-img" loading="lazy"
+               onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+          <div class="producto-info">
+            <span class="categoria-tag">${p.categoria || "General"}</span>
+            <h3>${nombre}</h3>
+            <div class="precio-container"><span class="precio">$${parseFloat(p.Precio || 0).toFixed(2)}</span></div>
+            <button class="btn-carrito" onclick="agregarAlCarrito('${p.id}', '${nombreEscapado}', ${p.Precio || 0}, '${p.imagen}')">Me interesa 💐</button>
+          </div>
+        `;
+
+        const img = card.querySelector(".producto-img");
+        if (img) img.addEventListener("click", () => abrirModal(p));
+
+        const btnCarrito = card.querySelector(".btn-carrito");
+        if (btnCarrito) btnCarrito.addEventListener("click", (e) => e.stopPropagation());
+
+        contenedor.appendChild(card);
+      });
+    }
+
+    function aplicarFiltro() {
+      let filtrados = todosLosProductos;
+      if (categoriaActual !== "todos") filtrados = filtrados.filter((p) => p.categoria === categoriaActual);
+      if (textoBusqueda) filtrados = filtrados.filter((p) => (p.Nombre || "").toLowerCase().includes(textoBusqueda));
+      filtrados = filtrados.filter((p) => (p.Precio || 0) <= precioMax);
+      filtrados = ordenarProductos(filtrados);
+      mostrarProductos(filtrados);
+
+      if (resultCount) {
+        const n = filtrados.length;
+        resultCount.textContent = n === 1 ? "1 producto" : `${n} productos`;
+      }
+    }
+
+    window.filtrar = function(categoria) {
+      categoriaActual = categoria;
+      aplicarFiltro();
+      document.querySelectorAll(".filtro-btn").forEach((btn) => btn.classList.remove("activo"));
+      event.target.classList.add("activo");
+    };
+
+    document.getElementById("buscador").addEventListener("input", (e) => {
+      textoBusqueda = e.target.value.trim().toLowerCase();
+      aplicarFiltro();
+    });
+
+    const precioInput = document.getElementById("precio-max");
+    const precioLabel = document.getElementById("precio-max-label");
+    precioInput.addEventListener("input", () => {
+      precioMax = Number(precioInput.value);
+      precioLabel.textContent = "$" + precioMax;
+      aplicarFiltro();
+    });
+
+    document.getElementById("ordenar").addEventListener("change", (e) => {
+      ordenActual = e.target.value;
+      aplicarFiltro();
+    });
+
+    btnLimpiar.addEventListener("click", () => {
+      categoriaActual = "todos";
+      textoBusqueda = "";
+      precioMax = 200;
+      ordenActual = "nuevo";
+
+      document.getElementById("buscador").value = "";
+      document.getElementById("precio-max").value = 200;
+      document.getElementById("precio-max-label").textContent = "$200";
+      document.getElementById("ordenar").value = "nuevo";
+
+      document.querySelectorAll(".filtro-btn").forEach((btn) => btn.classList.remove("activo"));
+      document.querySelector(".filtro-btn").classList.add("activo");
+
+      aplicarFiltro();
+    });
+
+    function cargarProductos() {
+      const contenedor = document.getElementById("productos");
+      onSnapshot(collection(db, "productos"), (snapshot) => {
+        todosLosProductos = [];
+        snapshot.forEach((doc) => {
+          todosLosProductos.push({ id: doc.id, ...doc.data() });
+        });
+        aplicarFiltro();
+      }, () => {
+        contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
+      });
+    }
+    cargarProductos();
+  </script>
+
+  <script type="module" src="js/carrito.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
