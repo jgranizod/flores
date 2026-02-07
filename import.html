@@ -51,25 +51,28 @@
         .replace(/\.(jpeg|jpg|png|webp)$/i, "");
     }
 
-    btn.addEventListener("click", async () => {
-      log.textContent = "Importando...\n";
-      try {
-        const data = JSON.parse(document.getElementById("json").value);
-        if (!Array.isArray(data)) throw new Error("El JSON debe ser un arreglo.");
+   btn.addEventListener("click", async () => {
+  log.textContent = "Importando...\n";
+  try {
+    const data = JSON.parse(document.getElementById("json").value);
+    if (!Array.isArray(data)) throw new Error("El JSON debe ser un arreglo.");
 
-        let count = 0;
-        for (const item of data) {
-          if (!item.archivo) throw new Error("Falta campo 'archivo'.");
-          const id = limpiarId(item.archivo);
-          await setDoc(doc(db, "productos", id), item, { merge: true });
-          count++;
-        }
+    let count = 0;
+    for (const item of data) {
+      if (!item.archivo) throw new Error("Falta campo 'archivo'.");
+      const id = limpiarId(item.archivo);
 
-        log.textContent = `✅ Importados/actualizados ${count} productos.`;
-      } catch (e) {
-        log.textContent = "❌ Error: " + e.message;
-      }
-    });
+      await setDoc(doc(db, "productos", id), item, { merge: true });
+      count++;
+      log.textContent = `Importando... ${count}/${data.length}`;
+    }
+
+    log.textContent = `✅ Importados/actualizados ${count} productos.`;
+  } catch (e) {
+    log.textContent = "❌ Error: " + e.message;
+  }
+});
+
   </script>
 </body>
 </html>
