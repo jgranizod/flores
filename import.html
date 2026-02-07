@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Importador de Productos</title>
+  <style>
+    body{font-family:Arial,sans-serif;padding:20px;background:#f7f7f7}
+    textarea{width:100%;height:300px;font-family:monospace}
+    button{padding:10px 16px;margin-top:10px}
+    .box{background:#fff;padding:16px;border-radius:8px}
+    .log{margin-top:10px;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <h2>Importador de productos a Firestore</h2>
+  <div class="box">
+    <p>Pega aquí tu JSON:</p>
+    <textarea id="json"></textarea>
+    <button id="btn">Importar / Actualizar</button>
+    <div class="log" id="log"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 🔴 PEGA TU FIREBASE CONFIG AQUÍ:
+    const firebaseConfig = {
+      apiKey: "PEGA_AQUI",
+      authDomain: "PEGA_AQUI",
+      projectId: "PEGA_AQUI",
+      storageBucket: "PEGA_AQUI",
+      messagingSenderId: "PEGA_AQUI",
+      appId: "PEGA_AQUI"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const btn = document.getElementById("btn");
+    const log = document.getElementById("log");
+
+    function limpiarId(nombreArchivo) {
+      return nombreArchivo
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[()]/g, "")
+        .replace(/[^a-z0-9\-_.]/g, "")
+        .replace(/\.(jpeg|jpg|png|webp)$/i, "");
+    }
+
+    btn.addEventListener("click", async () => {
+      log.textContent = "Importando...\n";
+      try {
+        const data = JSON.parse(document.getElementById("json").value);
+        if (!Array.isArray(data)) throw new Error("El JSON debe ser un arreglo.");
+
+        let count = 0;
+        for (const item of data) {
+          if (!item.archivo) throw new Error("Falta campo 'archivo'.");
+          const id = limpiarId(item.archivo);
+          await setDoc(doc(db, "productos", id), item, { merge: true });
+          count++;
+        }
+
+        log.textContent = `✅ Importados/actualizados ${count} productos.`;
+      } catch (e) {
+        log.textContent = "❌ Error: " + e.message;
+      }
+    });
+  </script>
+</body>
+</html>
