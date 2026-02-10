@@ -7,6 +7,14 @@ function enCola(tarea) {
   return colaOperaciones;
 }
 
+function resolverImagen(src) {
+  const s = (src || "").trim();
+  if (!s) return "";
+  if (/^https?:\/\//i.test(s)) return s;
+  if (s.startsWith("./") || s.startsWith("../")) return s;
+  return "./" + s.replace(/^\/+/, "");
+}
+
 function obtenerCarrito() {
   return carritoCache;
 }
@@ -28,8 +36,14 @@ window.agregarAlCarrito = function(id, nombre, precio, imagen) {
   return enCola(async () => {
     const carrito = obtenerCarrito();
     const existente = carrito.find((i) => i.id === id);
-    if (existente) existente.cantidad++;
-    else carrito.push({ id, nombre, precio: parseFloat(precio), imagen, cantidad: 1 });
+    const imagenFinal = resolverImagen(imagen);
+
+    if (existente) {
+      existente.cantidad++;
+      if (!existente.imagen && imagenFinal) existente.imagen = imagenFinal;
+    } else {
+      carrito.push({ id, nombre, precio: parseFloat(precio), imagen: imagenFinal, cantidad: 1 });
+    }
 
     guardarCarrito(carrito);
     mostrarNotificacion("Agregado a tu selección");
@@ -96,10 +110,13 @@ function renderizarCarrito() {
 
   contenedor.innerHTML = "";
   carritoCache.forEach((item) => {
+    const imagenFinal = resolverImagen(item.imagen);
+
     const div = document.createElement("div");
     div.className = "carrito-item";
     div.innerHTML = `
-      <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-img">
+      <img src="${imagenFinal}" alt="${item.nombre}" class="carrito-item-img"
+           onerror="this.src='https://via.placeholder.com/120?text=Sin+Imagen'">
       <div class="carrito-item-info">
         <h4>${item.nombre}</h4>
         <p class="carrito-item-precio">$${item.precio.toFixed(2)}</p>
@@ -159,9 +176,10 @@ window.checkoutWhatsApp = function() {
     mensaje += "------------------------------\\n";
 
     carritoCache.forEach((item, index) => {
+      const img = resolverImagen(item.imagen);
       mensaje += (index + 1) + ". *" + item.nombre + "*\\n";
       mensaje += "   Cantidad: " + item.cantidad + "\\n";
-      mensaje += "   Foto: " + item.imagen + "\\n\\n";
+      mensaje += "   Foto: " + img + "\\n\\n";
     });
 
     const total = calcularTotal();
