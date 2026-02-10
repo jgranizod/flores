@@ -1,28 +1,30 @@
 import { db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Cambia esto por tu GitHub Pages base:
-const BASE_GITHUB = "https://github.com/jgranizod/flores/";
-
-// Contenedor donde se muestran los productos
 const contenedor = document.getElementById("productos");
+
+function resolverImagen(src) {
+  const s = (src || "").trim();
+  if (!s) return "";
+  if (/^https?:\/\//i.test(s)) return s;
+  if (s.startsWith("./") || s.startsWith("../")) return s;
+  return "./" + s.replace(/^\/+/, "");
+}
 
 async function cargarProductos() {
   try {
-    const snapshot = await getDocs(collection(db, "productos"));
+    if (!contenedor) return;
 
+    const snapshot = await getDocs(collection(db, "productos"));
     contenedor.innerHTML = "";
+
     snapshot.forEach((doc) => {
       const p = doc.data();
       const nombre = p.Nombre || "";
       const precio = parseFloat(p.Precio || 0).toFixed(2);
       const stock = p.stock ?? 0;
       const categoria = p.categoria || "General";
-
-      // Construir URL final (si NO es url completa)
-      const imagenFinal = p.imagen?.startsWith("http")
-        ? p.imagen
-        : BASE_GITHUB + (p.imagen || "");
+      const imagenFinal = resolverImagen(p.imagen);
 
       const card = document.createElement("div");
       card.className = "producto";
@@ -42,7 +44,7 @@ async function cargarProductos() {
     });
   } catch (error) {
     console.error("Error al cargar productos:", error);
-    contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
+    if (contenedor) contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
   }
 }
 
