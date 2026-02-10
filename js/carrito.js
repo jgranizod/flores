@@ -11,8 +11,8 @@ function resolverImagen(src) {
   const s = (src || "").trim();
   if (!s) return "";
   if (/^https?:\/\//i.test(s)) return s;
-  if (s.startsWith("./") || s.startsWith("../")) return s;
-  return "./" + s.replace(/^\/+/, "");
+  const rel = s.startsWith("./") || s.startsWith("../") ? s : "./" + s.replace(/^\/+/, "");
+  return encodeURI(rel);
 }
 
 function obtenerCarrito() {
@@ -110,7 +110,7 @@ function renderizarCarrito() {
 
   contenedor.innerHTML = "";
   carritoCache.forEach((item) => {
-    const imagenFinal = resolverImagen(item.imagen);
+    const imagenFinal = resolverImagen(item.imagen) || "https://via.placeholder.com/120?text=Sin+Imagen";
 
     const div = document.createElement("div");
     div.className = "carrito-item";
