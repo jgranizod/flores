@@ -7,18 +7,17 @@ function resolverImagen(src) {
   const s = (src || "").trim();
   if (!s) return "";
   if (/^https?:\/\//i.test(s)) return s;
-  if (s.startsWith("./") || s.startsWith("../")) return s;
-  return "./" + s.replace(/^\/+/, "");
+  if (s.startsWith("./") || s.startsWith("../")) return encodeURI(s);
+  return encodeURI("./" + s.replace(/^\/+/, ""));
 }
 
 function normalizarProducto(data, id) {
-  const imagenRaw = data.imagen || data.image || data.img || "";
   return {
     id,
     Nombre: data.Nombre || data.nombre || data.name || "",
     Precio: Number(data.Precio ?? data.precio ?? data.price ?? 0),
     categoria: (data.categoria || data.Categoria || data.category || "general").toLowerCase(),
-    imagen: resolverImagen(imagenRaw),
+    imagen: resolverImagen(data.imagen || data.image || data.img || ""),
     stock: data.stock ?? data.Stock ?? 0,
     descripcion: data.descripcion || data.Descripcion || data.description || ""
   };
@@ -64,12 +63,9 @@ if (!contenedor) {
     document.body.style.overflow = "";
   }
 
-  if (document.getElementById("modal-cerrar")) {
-    document.getElementById("modal-cerrar").addEventListener("click", cerrarModal);
-  }
-  if (modal) {
-    modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
-  }
+  const btnCerrar = document.getElementById("modal-cerrar");
+  if (btnCerrar) btnCerrar.addEventListener("click", cerrarModal);
+  if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModal(); });
 
   if (btnModalAgregar) {
