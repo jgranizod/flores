@@ -3,23 +3,59 @@ import { collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.
 
 const contenedor = document.getElementById("productos");
 
+function normalizarClave(k) {
+  return String(k || "").trim().toLowerCase();
+}
+
+function pickField(data, keys) {
+  if (!data) return undefined;
+  const map = {};
+  Object.entries(data).forEach(([k, v]) => {
+    map[normalizarClave(k)] = v;
+  });
+  for (const key of keys) {
+    const v = map[key];
+    if (v !== undefined) return v;
+  }
+  return undefined;
+}
+
+function parsePrecio(val) {
+  if (val === null || val === undefined) return 0;
+  if (typeof val === "number") return Number.isFinite(val) ? val : 0;
+  const s = String(val).trim();
+  if (!s) return 0;
+  const cleaned = s.replace(/[^0-9.,-]/g, "");
+  if (cleaned.includes(",") && !cleaned.includes(".")) {
+    return parseFloat(cleaned.replace(",", ".")) || 0;
+  }
+  return parseFloat(cleaned.replace(/,/g, "")) || 0;
+}
+
 function resolverImagen(src) {
   const s = (src || "").trim();
   if (!s) return "";
   if (/^https?:\/\//i.test(s)) return s;
-  if (s.startsWith("./") || s.startsWith("../")) return encodeURI(s);
-  return encodeURI("./" + s.replace(/^\/+/, ""));
+  const rel = s.startsWith("./") || s.startsWith("../") ? s : "./" + s.replace(/^\/+/, "");
+  return encodeURI(rel);
 }
 
 function normalizarProducto(data, id) {
+  const nombre = pickField(data, ["nombre", "name", "titulo", "title"]);
+  const precio = pickField(data, ["precio", "price", "valor", "costo"]);
+  const categoria = pickField(data, ["categoria", "category", "tipo"]);
+  const imagen = pickField(data, ["imagen", "image", "img", "foto"]);
+  const stock = pickField(data, ["stock"]);
+  const descripcion = pickField(data, ["descripcion", "description", "desc"]);
+
   return {
     id,
-    Nombre: data.Nombre || data.nombre || data.name || "",
-    Precio: Number(data.Precio ?? data.precio ?? data.price ?? 0),
-    categoria: (data.categoria || data.Categoria || data.category || "general").toLowerCase(),
-    imagen: resolverImagen(data.imagen || data.image || data.img || ""),
-    stock: data.stock ?? data.Stock ?? 0,
-    descripcion: data.descripcion || data.Descripcion || data.description || ""
+    Nombre: nombre ? String(nombre).trim() : "",
+    Precio: parsePrecio(precio),
+    categoria: (categoria ? String(categoria) : "general").trim().toLowerCase(),
+    imagen: resolverImagen(imagen || ""),
+    stock: stock ?? 0,
+    descripcion: descripcion ? String(descripcion).trim() : ""
   };
 }
 
