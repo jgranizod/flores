@@ -2,7 +2,7 @@ import { db } from "./firebase.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Cambia esto por tu GitHub Pages base:
-const BASE_GITHUB = "https://TUUSUARIO.github.io/TU-REPO/";
+const BASE_GITHUB = "https://github.com/jgranizod/flores/";
 
 // Contenedor donde se muestran los productos
 const contenedor = document.getElementById("productos");
