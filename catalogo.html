@@ -51,11 +51,11 @@
     </div>
 
     <div class="filtros">
-      <button class="filtro-btn activo" onclick="filtrar('todos')">Todos</button>
-      <button class="filtro-btn" onclick="filtrar('rosas')">Rosas</button>
-      <button class="filtro-btn" onclick="filtrar('tulipanes')">Tulipanes</button>
-      <button class="filtro-btn" onclick="filtrar('mixtos')">Mixtos</button>
-      <button class="filtro-btn" onclick="filtrar('premium')">Premium</button>
+      <button class="filtro-btn activo" onclick="filtrar('todos', event)">Todos</button>
+      <button class="filtro-btn" onclick="filtrar('rosas', event)">Rosas</button>
+      <button class="filtro-btn" onclick="filtrar('tulipanes', event)">Tulipanes</button>
+      <button class="filtro-btn" onclick="filtrar('mixtos', event)">Mixtos</button>
+      <button class="filtro-btn" onclick="filtrar('premium', event)">Premium</button>
     </div>
 
     <div id="productos" class="grid">
@@ -139,14 +139,23 @@
     const resultCount = document.getElementById("result-count");
     const btnLimpiar = document.getElementById("limpiar-filtros");
 
+    function resolverImagen(src) {
+      const s = (src || "").trim();
+      if (!s) return "";
+      if (/^https?:\/\//i.test(s)) return s;
+      if (s.startsWith("./") || s.startsWith("../")) return s;
+      return "./" + s.replace(/^\/+/, "");
+    }
+
     function abrirModal(p) {
-      modalImagen.src = p.imagen || "";
+      const imagenFinal = resolverImagen(p.imagen);
+      modalImagen.src = imagenFinal || "https://via.placeholder.com/280?text=Sin+Imagen";
       modalImagen.alt = p.Nombre || "Producto";
       modalCategoria.textContent = p.categoria || "General";
       modalTitulo.textContent = p.Nombre || "";
       modalDescripcion.textContent = p.descripcion || p.Descripcion || "Sin descripcion.";
       modalPrecio.textContent = "$" + parseFloat(p.Precio || 0).toFixed(2);
-      productoActual = p;
+      productoActual = { ...p, imagen: imagenFinal };
       modal.classList.add("activo");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -193,15 +202,17 @@
         card.className = "producto";
         const nombre = p.Nombre || "";
         const nombreEscapado = nombre.replace(/'/g, "\\'");
+        const imagenFinal = resolverImagen(p.imagen);
+        const imagenEscapada = imagenFinal.replace(/'/g, "\\'");
 
         card.innerHTML = `
-          <img src="${p.imagen}" alt="${nombre}" class="producto-img" loading="lazy"
+          <img src="${imagenFinal}" alt="${nombre}" class="producto-img" loading="lazy"
                onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
           <div class="producto-info">
             <span class="categoria-tag">${p.categoria || "General"}</span>
             <h3>${nombre}</h3>
             <div class="precio-container"><span class="precio">$${parseFloat(p.Precio || 0).toFixed(2)}</span></div>
-            <button class="btn-carrito" onclick="agregarAlCarrito('${p.id}', '${nombreEscapado}', ${p.Precio || 0}, '${p.imagen}')">Me interesa 🌻</button>
+            <button class="btn-carrito" onclick="agregarAlCarrito('${p.id}', '${nombreEscapado}', ${p.Precio || 0}, '${imagenEscapada}')">Me interesa 🌻</button>
           </div>
         `;
 
@@ -229,11 +240,11 @@
       }
     }
 
-    window.filtrar = function(categoria) {
+    window.filtrar = function(categoria, event) {
       categoriaActual = categoria;
       aplicarFiltro();
       document.querySelectorAll(".filtro-btn").forEach((btn) => btn.classList.remove("activo"));
-      event.target.classList.add("activo");
+      if (event && event.target) event.target.classList.add("activo");
     };
 
     document.getElementById("buscador").addEventListener("input", (e) => {
