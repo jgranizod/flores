@@ -277,6 +277,36 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   .assurance-item{border-bottom:0;padding:12px 0;}
 }
 
+/* Carrito: slide correcto en móvil */
+#carrito-sidebar{
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(420px, 92vw);
+  height: 100vh;
+  background: var(--surface);
+  transition: right .3s ease;
+  box-shadow: -16px 0 40px rgba(0,0,0,.18);
+  z-index: 200;
+}
+
+#carrito-sidebar.abierto{
+  right: 0;
+}
+
+#carrito-items{
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+#carrito-footer{
+  position: sticky;
+  bottom: 0;
+  background: var(--surface-2);
+  z-index: 2;
+}
+
+
 @media (max-width: 600px){
   .header-stack{gap:8px;padding:12px 0;}
   .brand-name{font-size:1.4rem;}
@@ -288,3 +318,4 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
