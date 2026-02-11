@@ -288,6 +288,16 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   opacity: .92;
 }
 
+.brand-logo{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  background:#FBF8F2;
+  border-radius:50%;
+  padding:4px;
+  box-shadow:0 6px 14px rgba(59,46,30,0.12);
+}
+
 
 /* RESPONSIVE */
 @media (min-width: 900px){
@@ -298,4 +308,5 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   #carrito-sidebar{width:420px;right:-420px}
   #carrito-sidebar.abierto{right:0}
 }
+
 
