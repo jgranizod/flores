@@ -9,13 +9,13 @@
 </head>
 <body>
 
-  <header class="header sunflower-header">
+  <header class="header">
     <div class="container header-stack">
       <div class="brand">
         <img src="images/logo-girasol.png" class="brand-logo" alt="LUCIAS">
         <div>
           <div class="brand-name">LUCIAS</div>
-          <div class="brand-sub">tu detalle en flores</div>
+          <div class="brand-sub">TU DETALLE EN FLORES.</div>
         </div>
       </div>
 
@@ -23,6 +23,7 @@
         <a href="index.html" class="activo">Inicio</a>
         <a href="catalogo.html">Catálogo</a>
       </nav>
+
       <div class="header-actions">
         <button id="theme-toggle" class="btn-ghost">Modo oscuro 🌙</button>
         <button class="carrito-btn" onclick="toggleCarrito()">Carrito <span id="carrito-count" class="carrito-count">0</span></button>
@@ -59,29 +60,64 @@
       </div>
     </section>
 
+    <!-- Galería real tipo Pinterest -->
+    <section class="container section">
+      <div class="section-head alt">
+        <h2>Galería real</h2>
+        <p>Detalles auténticos, hechos con intención.</p>
+      </div>
+      <div class="gallery-grid">
+        <img src="images/arreglobonsai/arreglobonsai (1).jpeg" alt="Galería 1">
+        <img src="images/arregloflores/arregloflores (1).jpeg" alt="Galería 2">
+        <img src="images/arregloramillete/arregloramillete (1).jpeg" alt="Galería 3">
+        <img src="images/arreglovarios/arreglovarios (1).jpeg" alt="Galería 4">
+        <img src="images/arregloorquidea/arregloorquidea (1).jpeg" alt="Galería 5">
+        <img src="images/arreglochocovino/arreglochocovino (1).jpeg" alt="Galería 6">
+      </div>
+    </section>
+
     <section class="container section assurances">
       <h2 class="assurances-title">Lo que cuidamos por ti</h2>
       <div class="assurance-list">
         <div class="assurance-item">
-          <span class="assurance-icon">✿</span>
+          <span class="assurance-icon icon-hand"></span>
           <div>
             <h3>Diseño a medida</h3>
             <p>Adaptamos tonos y estilo a tu gusto.</p>
           </div>
         </div>
         <div class="assurance-item">
-          <span class="assurance-icon">✧</span>
+          <span class="assurance-icon icon-leaf"></span>
           <div>
             <h3>Colores de temporada</h3>
             <p>Combinaciones frescas según disponibilidad.</p>
           </div>
         </div>
         <div class="assurance-item">
-          <span class="assurance-icon">⏳</span>
+          <span class="assurance-icon icon-clock"></span>
           <div>
             <h3>Entrega acordada</h3>
             <p>Coordinamos contigo para que sea perfecto.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ corto -->
+    <section class="container section faq">
+      <h2 class="assurances-title">Preguntas frecuentes</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>¿Con cuánta anticipación debo pedir?</h3>
+          <p>Con 1 día de anticipación para garantizar disponibilidad.</p>
+        </div>
+        <div class="faq-item">
+          <h3>¿Puedo personalizar colores o estilo?</h3>
+          <p>Sí. Ajustamos tonos, forma y detalles según tu inspiración.</p>
+        </div>
+        <div class="faq-item">
+          <h3>¿Cómo coordino la entrega?</h3>
+          <p>Te escribimos por WhatsApp para confirmar horario y lugar.</p>
         </div>
       </div>
     </section>
@@ -95,6 +131,9 @@
       </div>
     </section>
   </main>
+
+  <!-- Botón fijo WhatsApp móvil -->
+  <a class="wa-fab" href="https://wa.me/593963247370" target="_blank">Cotizar</a>
 
   <!-- Carrito -->
   <div id="carrito-overlay"></div>
@@ -137,7 +176,7 @@
             <span id="modal-precio" class="precio"></span>
           </div>
           <div class="modal-acciones">
-            <button id="modal-agregar" class="btn-primary">Me interesa 🌻</button>
+            <button id="modal-agregar" class="btn-primary">Agregar al carrito</button>
           </div>
         </div>
       </div>
@@ -152,6 +191,7 @@
     import { db } from "./js/firebase.js";
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    const WHATSAPP = "593963247370";
     const modal = document.getElementById("producto-modal");
     const modalImagen = document.getElementById("modal-imagen");
     const modalCategoria = document.getElementById("modal-categoria");
@@ -219,15 +259,16 @@
     btnModalAgregar.addEventListener("click", () => {
       if (!productoActual) return;
       if (window.agregarAlCarrito) {
-        window.agregarAlCarrito(
-          productoActual.id,
-          productoActual.Nombre || "",
-          productoActual.Precio || 0,
-          productoActual.imagen || ""
-        );
+        window.agregarAlCarrito(productoActual.id, productoActual.Nombre || "", productoActual.Precio || 0, productoActual.imagen || "");
       }
       cerrarModal();
     });
+
+    function cotizarProducto(p){
+      const msg = `Hola, me interesa este arreglo: ${p.Nombre}. ¿Me podrías cotizar?`;
+      const url = `https://wa.me/${WHATSAPP}?text=` + encodeURIComponent(msg);
+      window.open(url, "_blank");
+    }
 
     const contenedor = document.getElementById("destacados");
 
@@ -242,23 +283,26 @@
           const p = normalizarProducto(doc.data(), doc.id);
           if (!p.imagen || p.Precio <= 0) return;
 
-          const img = p.imagen;
-
           const card = document.createElement("div");
           card.className = "producto";
           card.innerHTML = `
-            <img src="${img}" alt="${p.Nombre}" class="producto-img" loading="lazy"
-                 onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+            <img src="${p.imagen}" alt="${p.Nombre}" class="producto-img" loading="lazy">
             <div class="producto-info">
               <span class="categoria-tag">${p.categoria || "General"}</span>
               <h3>${p.Nombre}</h3>
-              <div class="precio-container"><span class="precio">$${(p.Precio || 0).toFixed(2)}</span></div>
-              <button class="btn-detalles">Ver detalles</button>
+              <div class="acciones">
+                <button class="btn-detalles">Ver detalles</button>
+                <button class="btn-carrito">Cotizar este arreglo</button>
+              </div>
             </div>
           `;
           card.querySelector(".btn-detalles").addEventListener("click", (e) => {
             e.stopPropagation();
             abrirModal(p);
+          });
+          card.querySelector(".btn-carrito").addEventListener("click", (e) => {
+            e.stopPropagation();
+            cotizarProducto(p);
           });
 
           contenedor.appendChild(card);
@@ -278,6 +322,5 @@
 
   <script type="module" src="js/carrito.js"></script>
   <script src="js/ui.js"></script>
-
 </body>
 </html>
