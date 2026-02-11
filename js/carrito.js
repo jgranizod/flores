@@ -1,4 +1,4 @@
-const WHATSAPP_NUMERO = "593985700805";
+const WHATSAPP_NUMERO = "593963247370";
 let carritoCache = [];
 let colaOperaciones = Promise.resolve();
 
@@ -206,3 +206,4 @@ function mostrarNotificacion(mensaje) {
     setTimeout(() => notif.remove(), 300);
   }, 2500);
 }
+
