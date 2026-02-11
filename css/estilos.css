@@ -527,6 +527,67 @@ h1, h2, h3 {
   box-shadow:0 26px 50px rgba(62,47,28,.16);
 }
 
+/* === Filtros estilo premium === */
+.select-orden,
+.input-busqueda{
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:10px 16px;
+  background:var(--surface);
+  color:var(--text);
+  font-weight:600;
+  box-shadow:var(--shadow-soft);
+  transition: all .2s ease;
+}
+
+.select-orden:focus,
+.input-busqueda:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(244,180,0,.18);
+}
+
+/* Botones de filtros */
+.filtro-btn{
+  border:1px solid var(--border);
+  background:var(--surface);
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:600;
+  color:var(--text);
+  transition: all .2s ease;
+  box-shadow:var(--shadow-soft);
+}
+
+.filtro-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover);
+}
+
+.filtro-btn.activo{
+  background:linear-gradient(180deg,#F7C437 0%,#E6A100 100%);
+  color:#fff;
+  border-color:transparent;
+}
+
+/* Botón limpiar filtros */
+#limpiar-filtros{
+  background:linear-gradient(180deg,#F7C437 0%,#E6A100 100%);
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:600;
+  box-shadow:var(--shadow-soft);
+  transition: all .2s ease;
+}
+
+#limpiar-filtros:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover);
+}
+
+
 /* Mobile elegante */
 @media (max-width:600px){
   .hero-min h1{font-size:2.2rem;}
@@ -558,6 +619,7 @@ h1, h2, h3 {
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
 
 
 
