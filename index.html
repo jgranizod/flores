@@ -25,7 +25,7 @@
       </nav>
       <div class="header-actions">
         <button id="theme-toggle" class="btn-ghost">Modo oscuro 🌙</button>
-        <button class="carrito-btn" onclick="toggleCarrito()">Mis selecciones <span id="carrito-count" class="carrito-count">0</span></button>
+        <button class="carrito-btn" onclick="toggleCarrito()">Carrito <span id="carrito-count" class="carrito-count">0</span></button>
       </div>
     </div>
   </header>
@@ -34,11 +34,11 @@
     <section class="hero-min">
       <div class="container">
         <p class="eyebrow">L U C I A S</p>
-        <h1>Elige el estilo que te enamora. Nosotros lo creamos.</h1>
-        <p class="lead">Cada arreglo es único. Tu selección es la guía para diseñar el tuyo con detalles artesanales.</p>
+        <h1>Arreglos únicos, creados a tu medida.</h1>
+        <p class="lead">Elige tu inspiración y nosotros la convertimos en un detalle inolvidable.</p>
         <div class="hero-cta">
           <a class="btn-primary" href="catalogo.html">Ver catálogo 🌼</a>
-          <button class="btn-ghost" onclick="toggleCarrito()">Ver mis selecciones</button>
+          <button class="btn-ghost" onclick="toggleCarrito()">Ver mi carrito</button>
         </div>
       </div>
     </section>
@@ -90,7 +90,7 @@
   <div id="carrito-overlay"></div>
   <div id="carrito-sidebar">
     <div class="carrito-header">
-      <h2>Mis selecciones</h2>
+      <h2>Carrito</h2>
       <button class="carrito-close" onclick="toggleCarrito()">&times;</button>
     </div>
     <div id="carrito-items"></div>
@@ -231,7 +231,6 @@
           if (count >= 4) return;
           const p = normalizarProducto(doc.data(), doc.id);
 
-          // Filtra productos sin imagen o sin precio válido
           if (!p.imagen || p.Precio <= 0) return;
 
           const img = p.imagen;
