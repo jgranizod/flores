@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Girasol Atelier — Inicio</title>
+  <title>LUCIAS — Inicio</title>
   <link rel="stylesheet" href="css/estilos.css">
+  <link rel="icon" href="images/logo-girasol.png">
 </head>
 <body>
 
   <header class="header sunflower-header">
     <div class="container header-stack">
-   <div class="brand">
-  <img src="images/logo-girasol.png" class="brand-logo" alt="LUCIAS">
-  <div>
-    <div class="brand-name">LUCIAS</div>
-    <div class="brand-sub">tu detalle en flores</div>
-  </div>
-</div>
-
-  
+      <div class="brand">
+        <img src="images/logo-girasol.png" class="brand-logo" alt="LUCIAS">
+        <div>
+          <div class="brand-name">LUCIAS</div>
+          <div class="brand-sub">tu detalle en flores</div>
+        </div>
+      </div>
 
       <nav class="nav pills">
         <a href="index.html" class="activo">Inicio</a>
@@ -33,19 +32,16 @@
 
   <main>
     <section class="hero-min">
-  <div class="container">
-    <p class="eyebrow">L U C I A S</p>
-    <h1>Elige el estilo que te enamora. Nosotros lo creamos.</h1>
-    <p class="lead">Cada arreglo es único. Tu selección es la guía para diseñar el tuyo con detalles artesanales.</p>
-    <div class="hero-cta">
-      <a class="btn-primary" href="catalogo.html">Ver catálogo 🌼</a>
-      <button class="btn-ghost" onclick="toggleCarrito()">Ver mis selecciones</button>
-    </div>
-  </div>
-</section>
-
-
-   
+      <div class="container">
+        <p class="eyebrow">L U C I A S</p>
+        <h1>Elige el estilo que te enamora. Nosotros lo creamos.</h1>
+        <p class="lead">Cada arreglo es único. Tu selección es la guía para diseñar el tuyo con detalles artesanales.</p>
+        <div class="hero-cta">
+          <a class="btn-primary" href="catalogo.html">Ver catálogo 🌼</a>
+          <button class="btn-ghost" onclick="toggleCarrito()">Ver mis selecciones</button>
+        </div>
+      </div>
+    </section>
 
     <section class="container section">
       <div class="section-head alt">
@@ -63,33 +59,31 @@
     </section>
 
     <section class="container section assurances">
-  <h2 class="assurances-title">Lo que cuidamos por ti</h2>
-  <div class="assurance-list">
-    <div class="assurance-item">
-      <span class="assurance-icon">✿</span>
-      <div>
-        <h3>Diseño a medida</h3>
-        <p>Adaptamos tonos y estilo a tu gusto.</p>
+      <h2 class="assurances-title">Lo que cuidamos por ti</h2>
+      <div class="assurance-list">
+        <div class="assurance-item">
+          <span class="assurance-icon">✿</span>
+          <div>
+            <h3>Diseño a medida</h3>
+            <p>Adaptamos tonos y estilo a tu gusto.</p>
+          </div>
+        </div>
+        <div class="assurance-item">
+          <span class="assurance-icon">✧</span>
+          <div>
+            <h3>Colores de temporada</h3>
+            <p>Combinaciones frescas según disponibilidad.</p>
+          </div>
+        </div>
+        <div class="assurance-item">
+          <span class="assurance-icon">⏳</span>
+          <div>
+            <h3>Entrega acordada</h3>
+            <p>Coordinamos contigo para que sea perfecto.</p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="assurance-item">
-      <span class="assurance-icon">✧</span>
-      <div>
-        <h3>Colores de temporada</h3>
-        <p>Combinaciones frescas según disponibilidad.</p>
-      </div>
-    </div>
-    <div class="assurance-item">
-      <span class="assurance-icon">⏳</span>
-      <div>
-        <h3>Entrega acordada</h3>
-        <p>Coordinamos contigo para que sea perfecto.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-    
+    </section>
   </main>
 
   <!-- Carrito -->
@@ -141,101 +135,137 @@
   </div>
 
   <footer class="footer">
-    <p>© 2024 Girasol Atelier — Arreglos únicos</p>
+    <p>© 2024 LUCIAS — tu detalle en flores</p>
   </footer>
 
-<script type="module">
-  import { db } from "./js/firebase.js";
-  import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <script type="module">
+    import { db } from "./js/firebase.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  function parsePrecio(val) {
-    if (val === null || val === undefined) return 0;
-    if (typeof val === "number") return val;
-    const s = String(val).trim();
-    if (!s) return 0;
-    const cleaned = s.replace(/[^0-9.,-]/g, "");
-    if (cleaned.includes(",") && !cleaned.includes(".")) {
-      return parseFloat(cleaned.replace(",", ".")) || 0;
+    const modal = document.getElementById("producto-modal");
+    const modalImagen = document.getElementById("modal-imagen");
+    const modalCategoria = document.getElementById("modal-categoria");
+    const modalTitulo = document.getElementById("modal-title");
+    const modalDescripcion = document.getElementById("modal-descripcion");
+    const modalPrecio = document.getElementById("modal-precio");
+    const btnModalAgregar = document.getElementById("modal-agregar");
+    let productoActual = null;
+
+    function parsePrecio(val) {
+      if (val === null || val === undefined) return 0;
+      if (typeof val === "number") return val;
+      const s = String(val).trim();
+      if (!s) return 0;
+      const cleaned = s.replace(/[^0-9.,-]/g, "");
+      if (cleaned.includes(",") && !cleaned.includes(".")) {
+        return parseFloat(cleaned.replace(",", ".")) || 0;
+      }
+      return parseFloat(cleaned.replace(/,/g, "")) || 0;
     }
-    return parseFloat(cleaned.replace(/,/g, "")) || 0;
-  }
 
-  function resolverImagen(src) {
-    const s = (src || "").trim();
-    if (!s) return "";
-    if (/^https?:\/\//i.test(s)) return s;
-    const rel = s.startsWith("./") || s.startsWith("../") ? s : "./" + s.replace(/^\/+/, "");
-    return encodeURI(rel);
-  }
+    function resolverImagen(src) {
+      const s = (src || "").trim();
+      if (!s) return "";
+      if (/^https?:\/\//i.test(s)) return s;
+      const rel = s.startsWith("./") || s.startsWith("../") ? s : "./" + s.replace(/^\/+/, "");
+      return encodeURI(rel);
+    }
 
-  function normalizarProducto(data, id) {
-    return {
-      id,
-      Nombre: data.Nombre || data.nombre || data.name || "",
-      Precio: parsePrecio(data.Precio ?? data.precio ?? data.price ?? 0),
-      categoria: (data.categoria || data.Categoria || data.category || "General"),
-      imagen: resolverImagen(data.imagen || data.image || data.img || ""),
-      descripcion: data.descripcion || data.Descripcion || data.description || ""
-    };
-  }
+    function normalizarProducto(data, id) {
+      return {
+        id,
+        Nombre: data.Nombre || data.nombre || data.name || "",
+        Precio: parsePrecio(data.Precio ?? data.precio ?? data.price ?? 0),
+        categoria: (data.categoria || data.Categoria || data.category || "General"),
+        imagen: resolverImagen(data.imagen || data.image || data.img || ""),
+        descripcion: data.descripcion || data.Descripcion || data.description || ""
+      };
+    }
 
-  const contenedor = document.getElementById("destacados");
+    function abrirModal(p) {
+      const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+      modalImagen.src = img;
+      modalImagen.alt = p.Nombre || "Producto";
+      modalCategoria.textContent = p.categoria || "General";
+      modalTitulo.textContent = p.Nombre || "";
+      modalDescripcion.textContent = p.descripcion || "Sin descripcion.";
+      modalPrecio.textContent = "$" + (p.Precio || 0).toFixed(2);
+      productoActual = p;
+      modal.classList.add("activo");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
 
-  async function cargarDestacados() {
-    try {
-      const snapshot = await getDocs(collection(db, "productos"));
-      contenedor.innerHTML = "";
+    function cerrarModal() {
+      modal.classList.remove("activo");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
 
-      let count = 0;
-      snapshot.forEach((doc) => {
-        if (count >= 4) return;
-        const p = normalizarProducto(doc.data(), doc.id);
-        const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+    document.getElementById("modal-cerrar").addEventListener("click", cerrarModal);
+    modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModal(); });
 
-        const card = document.createElement("div");
-        card.className = "producto";
-        card.innerHTML = `
-          <img src="${img}" alt="${p.Nombre}" class="producto-img" loading="lazy"
-               onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
-          <div class="producto-info">
-            <span class="categoria-tag">${p.categoria || "General"}</span>
-            <h3>${p.Nombre}</h3>
-            <div class="precio-container"><span class="precio">$${(p.Precio || 0).toFixed(2)}</span></div>
-            <button class="btn-detalles">Ver detalles</button>
-          </div>
-        `;
-        card.querySelector(".btn-detalles").addEventListener("click", (e) => {
-          e.stopPropagation();
-          abrirModal(p);
+    btnModalAgregar.addEventListener("click", () => {
+      if (!productoActual) return;
+      if (window.agregarAlCarrito) {
+        window.agregarAlCarrito(
+          productoActual.id,
+          productoActual.Nombre || "",
+          productoActual.Precio || 0,
+          productoActual.imagen || ""
+        );
+      }
+      cerrarModal();
+    });
+
+    const contenedor = document.getElementById("destacados");
+
+    async function cargarDestacados() {
+      try {
+        const snapshot = await getDocs(collection(db, "productos"));
+        contenedor.innerHTML = "";
+
+        let count = 0;
+        snapshot.forEach((doc) => {
+          if (count >= 4) return;
+          const p = normalizarProducto(doc.data(), doc.id);
+          const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+
+          const card = document.createElement("div");
+          card.className = "producto";
+          card.innerHTML = `
+            <img src="${img}" alt="${p.Nombre}" class="producto-img" loading="lazy"
+                 onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+            <div class="producto-info">
+              <span class="categoria-tag">${p.categoria || "General"}</span>
+              <h3>${p.Nombre}</h3>
+              <div class="precio-container"><span class="precio">$${(p.Precio || 0).toFixed(2)}</span></div>
+              <button class="btn-detalles">Ver detalles</button>
+            </div>
+          `;
+          card.querySelector(".btn-detalles").addEventListener("click", (e) => {
+            e.stopPropagation();
+            abrirModal(p);
+          });
+
+          contenedor.appendChild(card);
+          count++;
         });
 
-        contenedor.appendChild(card);
-        count++;
-      });
-
-      if (count === 0) {
-        contenedor.innerHTML = '<p class="loading">No hay productos disponibles</p>';
+        if (count === 0) {
+          contenedor.innerHTML = '<p class="loading">No hay productos disponibles</p>';
+        }
+      } catch {
+        contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
       }
-    } catch {
-      contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
     }
-  }
 
-  cargarDestacados();
-</script>
-
-
+    cargarDestacados();
+  </script>
 
   <script type="module" src="js/carrito.js"></script>
   <script src="js/ui.js"></script>
-  <script type="module" src="js/productos.js"></script>
 
 </body>
 </html>
-
-
-
-
-
-
-
