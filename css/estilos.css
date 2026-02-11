@@ -324,6 +324,54 @@ h1,h2,h3{
 }
 .hero-min, .section-head, .assurance-list, .grid {animation: fadeUp .6s ease both;}
 
+/* === FILTROS: más bonitos + animación === */
+.filters-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.filters-card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.input-busqueda, .select-orden, #precio-max{
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+
+.input-busqueda:focus, .select-orden:focus, #precio-max:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(244,180,0,.15);
+  outline: none;
+}
+
+.filtro-btn{
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.filtro-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Slider suave */
+#precio-max{
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* Botón limpiar con animación */
+#limpiar-filtros{
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+#limpiar-filtros:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+
 /* RESPONSIVE */
 @media (min-width: 900px){
   .header-stack{flex-direction:row;align-items:center;justify-content:space-between}
@@ -510,5 +558,6 @@ h1, h2, h3 {
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
 
 
