@@ -58,6 +58,16 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
 .brand-name{font-size:1.7rem;font-weight:700;color:var(--text)}
 .brand-sub{font-size:.9rem;color:var(--text-2)}
 
+.brand-logo{
+  width:30px;
+  height:30px;
+  object-fit:contain;
+  background:#FBF8F2;
+  border-radius:50%;
+  padding:4px;
+  box-shadow:0 6px 14px rgba(59,46,30,0.12);
+}
+
 .nav.pills{display:flex;gap:10px;flex-wrap:wrap}
 .nav.pills a{
   padding:8px 16px;border-radius:var(--radius-pill);
@@ -100,65 +110,34 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
 }
 
 /* HERO */
-.sunflower-hero{display:grid;grid-template-columns:1fr;gap:20px;padding:32px 0}
-.hero-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  padding:22px;border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-soft);
+.hero-min{
+  padding: 34px 0 20px;
 }
-.hero-card .eyebrow{letter-spacing:.25em;font-size:.75rem;color:var(--text-2)}
-.hero-card h1{font-size:2.4rem;margin:8px 0}
-.hero-card .lead{color:var(--text-2)}
+.hero-min .container{
+  max-width: 760px;
+}
+.hero-min .eyebrow{
+  font-size:.75rem;
+  letter-spacing:.4em;
+  color: var(--text-2);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.hero-min h1{
+  font-size:2.4rem;
+  line-height:1.1;
+  margin-bottom: 8px;
+}
+.hero-min .lead{
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
-
-.hero-art{
-  position:relative;background:var(--surface-2);
-  border-radius:var(--radius-lg);height:270px;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-}
-.sunburst{
-  position:absolute;width:280px;height:280px;border-radius:50%;
-  background:conic-gradient(from 0deg, #FFD670, #F4B400, #FFE2A0, #F4B400);
-  opacity:.38;animation:spin 20s linear infinite
-}
-.hero-flower{font-size:6rem;z-index:1;animation:float 4s ease-in-out infinite}
-.hero-note{
-  position:absolute;bottom:12px;right:16px;background:#fff6dc;
-  padding:6px 12px;border-radius:var(--radius-pill);font-size:.85rem
-}
-
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes float{50%{transform:translateY(-6px)}}
 
 /* SECCIONES */
 .section{padding:40px 0}
 .section-head.alt h1,.section-head.alt h2{font-size:2.1rem}
 .section-head.alt p{color:var(--text-2); max-width: 640px}
-
-/* DESTACADOS */
-.destacados{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius-lg);
-  padding:26px;
-  box-shadow:var(--shadow-soft);
-  margin-top:18px;
-}
-.destacados .section-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-bottom:18px}
-.destacados .section-head h2{font-size:2rem}
-.destacados .section-head p{color:var(--text-2)}
-
-/* MOSAIC */
-.mosaic{display:grid;grid-template-columns:1fr;gap:14px}
-.mosaic-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:16px;box-shadow:var(--shadow-soft);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-.mosaic-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-hover)}
 
 /* FILTROS */
 .filters-card{
@@ -264,114 +243,48 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
 
 .footer{text-align:center;padding:26px;color:var(--text-2)}
 
-
-.brand-logo{
-  width:32px;
-  height:32px;
-  object-fit:contain;
-  background:#FBF8F2;
-  border-radius:50%;
-  padding:5px;
-  box-shadow:0 6px 16px rgba(59,46,30,0.12);
-}
-
-/* Logo hero (tamaño final) */
-.hero-logo{
-  width:100px;
-  height:100px;
-  object-fit:contain;
-  background:#FBF8F2;
-  border-radius:50%;
-  padding:10px;
-  box-shadow:0 12px 24px rgba(59,46,30,0.12);
-  opacity:.92;
-}
-
-/* HERO minimalista */
-.hero-min{
-  padding: 34px 0 20px;
-}
-.hero-min .container{
-  max-width: 760px;
-}
-.hero-min .eyebrow{
-  font-size:.75rem;
-  letter-spacing:.4em;
-  color: var(--text-2);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.hero-min h1{
-  font-size:2.4rem;
-  line-height:1.1;
-  margin-bottom: 8px;
-}
-.hero-min .lead{
-  color: var(--text-2);
-  margin-bottom: 16px;
-}
-
 /* Promesas minimalistas */
-.assurances{
-  padding-top: 8px;
-}
-.assurances-title{
-  font-size:1.6rem;
-  margin-bottom: 12px;
-}
-.assurance-list{
-  display:grid;
-  gap:12px;
-}
+.assurances{padding-top: 8px;}
+.assurances-title{font-size:1.6rem;margin-bottom: 12px;}
+.assurance-list{display:grid;gap:12px;}
 .assurance-item{
-  display:flex;
-  gap:12px;
-  padding:10px 0;
-  border-bottom:1px solid var(--border);
+  display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.assurance-item:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(59,46,30,.08);
 }
 .assurance-item:last-child{border-bottom:0;}
 .assurance-icon{
-  width:30px;height:30px;
-  border-radius:50%;
+  width:30px;height:30px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   background: var(--surface-2);
   color: var(--accent-2);
   font-size:16px;
 }
-.assurance-item h3{
-  font-size:1rem;
-  margin-bottom:2px;
-}
-.assurance-item p{
-  color: var(--text-2);
-  font-size:.95rem;
-}
-
-/* responsive: en desktop se pueden ver en 3 columnas */
-@media (min-width: 900px){
-  .assurance-list{
-    grid-template-columns: repeat(3, 1fr);
-    gap:18px;
-  }
-  .assurance-item{
-    border-bottom:0;
-    padding:12px 0;
-  }
-}
-
-
+.assurance-item h3{font-size:1rem;margin-bottom:2px;}
+.assurance-item p{color: var(--text-2);font-size:.95rem;}
 
 /* RESPONSIVE */
 @media (min-width: 900px){
   .header-stack{flex-direction:row;align-items:center;justify-content:space-between}
   .sunflower-hero{grid-template-columns:1.1fr .9fr}
-  .mosaic{grid-template-columns:repeat(3,1fr)}
   .filters-card{grid-template-columns:1fr 1fr 1fr}
   #carrito-sidebar{width:420px;right:-420px}
   #carrito-sidebar.abierto{right:0}
+  .assurance-list{grid-template-columns: repeat(3, 1fr);gap:18px;}
+  .assurance-item{border-bottom:0;padding:12px 0;}
 }
 
-
-
-
-
+@media (max-width: 600px){
+  .header-stack{gap:8px;padding:12px 0;}
+  .brand-name{font-size:1.4rem;}
+  .nav.pills a{padding:6px 12px;font-size:.9rem;}
+  .header-actions{gap:8px;}
+  .btn-ghost, .carrito-btn{padding:8px 12px;font-size:.9rem;}
+  .hero-min h1{font-size:2rem;line-height:1.15;}
+  .hero-cta{flex-direction:column;align-items:stretch;}
+  .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
+  .grid{grid-template-columns:1fr;}
+}
