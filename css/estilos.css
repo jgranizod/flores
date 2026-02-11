@@ -265,39 +265,6 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
 .footer{text-align:center;padding:26px;color:var(--text-2)}
 
 
-/* --- Ajuste logo header --- */
-.brand-logo{
-  width:34px;
-  height:34px;
-  object-fit:contain;
-  background: #FBF8F2;
-  border-radius:50%;
-  padding:6px;
-  box-shadow: 0 8px 18px rgba(59,46,30,0.12);
-}
-
-/* --- Ajuste logo en hero --- */
-.hero-logo{
-  width:120px;
-  height:120px;
-  object-fit:contain;
-  background: #FBF8F2;
-  border-radius:50%;
-  padding:14px;
-  box-shadow: 0 16px 30px rgba(59,46,30,0.15);
-  opacity: .92;
-}
-
-.brand-logo{
-  width:26px;
-  height:26px;
-  object-fit:contain;
-  background:#FBF8F2;
-  border-radius:50%;
-  padding:4px;
-  box-shadow:0 6px 14px rgba(59,46,30,0.12);
-}
-
 .brand-logo{
   width:32px;
   height:32px;
@@ -306,6 +273,18 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   border-radius:50%;
   padding:5px;
   box-shadow:0 6px 16px rgba(59,46,30,0.12);
+}
+
+/* Logo hero (tamaño final) */
+.hero-logo{
+  width:100px;
+  height:100px;
+  object-fit:contain;
+  background:#FBF8F2;
+  border-radius:50%;
+  padding:10px;
+  box-shadow:0 12px 24px rgba(59,46,30,0.12);
+  opacity:.92;
 }
 
 
@@ -318,6 +297,7 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   #carrito-sidebar{width:420px;right:-420px}
   #carrito-sidebar.abierto{right:0}
 }
+
 
 
 
