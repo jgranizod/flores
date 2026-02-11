@@ -287,6 +287,79 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   opacity:.92;
 }
 
+/* HERO minimalista */
+.hero-min{
+  padding: 34px 0 20px;
+}
+.hero-min .container{
+  max-width: 760px;
+}
+.hero-min .eyebrow{
+  font-size:.75rem;
+  letter-spacing:.4em;
+  color: var(--text-2);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.hero-min h1{
+  font-size:2.4rem;
+  line-height:1.1;
+  margin-bottom: 8px;
+}
+.hero-min .lead{
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+/* Promesas minimalistas */
+.assurances{
+  padding-top: 8px;
+}
+.assurances-title{
+  font-size:1.6rem;
+  margin-bottom: 12px;
+}
+.assurance-list{
+  display:grid;
+  gap:12px;
+}
+.assurance-item{
+  display:flex;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.assurance-item:last-child{border-bottom:0;}
+.assurance-icon{
+  width:30px;height:30px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background: var(--surface-2);
+  color: var(--accent-2);
+  font-size:16px;
+}
+.assurance-item h3{
+  font-size:1rem;
+  margin-bottom:2px;
+}
+.assurance-item p{
+  color: var(--text-2);
+  font-size:.95rem;
+}
+
+/* responsive: en desktop se pueden ver en 3 columnas */
+@media (min-width: 900px){
+  .assurance-list{
+    grid-template-columns: repeat(3, 1fr);
+    gap:18px;
+  }
+  .assurance-item{
+    border-bottom:0;
+    padding:12px 0;
+  }
+}
+
+
 
 /* RESPONSIVE */
 @media (min-width: 900px){
@@ -297,6 +370,7 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   #carrito-sidebar{width:420px;right:-420px}
   #carrito-sidebar.abierto{right:0}
 }
+
 
 
 
