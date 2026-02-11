@@ -40,15 +40,7 @@
           <a class="btn-primary" href="https://wa.me/593963247370" target="_blank">Cotizar por WhatsApp 💬</a>
           <a class="btn-ghost" href="catalogo.html">Ver catálogo</a>
         </div>
-        <p class="urgencia">Agendamos entregas con cupos diarios limitados.</p>
-      </div>
-    </section>
-
-    <section class="container section trust">
-      <div class="trust-list">
-        <div class="trust-item">✅ Entrega acordada</div>
-        <div class="trust-item">✅ Personalización total</div>
-        <div class="trust-item">✅ Flores frescas</div>
+        <p class="urgencia">Solo pedidos con 1 día de anticipación.</p>
       </div>
     </section>
 
@@ -248,7 +240,6 @@
         snapshot.forEach((doc) => {
           if (count >= 4) return;
           const p = normalizarProducto(doc.data(), doc.id);
-
           if (!p.imagen || p.Precio <= 0) return;
 
           const img = p.imagen;
