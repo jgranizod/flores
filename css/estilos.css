@@ -424,6 +424,18 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   display:grid;
   gap:8px;
 }
+/* Ocultar precios en toda la web */
+.precio,
+.carrito-item-precio,
+.carrito-item-subtotal,
+#carrito-subtotal,
+#carrito-envio,
+#carrito-impuestos,
+#carrito-total,
+.carrito-resumen,
+.carrito-total-container{
+  display:none !important;
+}
 
 
 @media (max-width: 600px){
@@ -437,5 +449,6 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
 
 
