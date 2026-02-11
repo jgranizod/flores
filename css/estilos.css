@@ -333,6 +333,112 @@ h1,h2,h3{
   .testimonios-list{grid-template-columns:repeat(3,1fr);}
 }
 
+/* ====== ESTILO EDITORIAL / PINTEREST ====== */
+
+/* Tipografía más elegante */
+h1, h2, h3 {
+  font-family: "Playfair Display", serif !important;
+  letter-spacing: .4px;
+}
+
+/* Contenedor más editorial */
+.container{max-width:1080px;}
+
+/* HERO con más aire */
+.hero-min{
+  padding:48px 0 28px;
+}
+.hero-min h1{
+  font-size:2.8rem;
+  line-height:1.12;
+}
+.hero-min .lead{
+  font-size:1.05rem;
+  opacity:.9;
+}
+
+/* Grid Pinterest */
+.grid{
+  gap:26px;
+}
+.producto{
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 16px 38px rgba(62,47,28,0.12);
+}
+
+/* Hover elegante */
+.producto-img{
+  transform:scale(1);
+  transition:transform .45s ease, filter .45s ease;
+  filter:saturate(1.02);
+}
+.producto:hover .producto-img{
+  transform:scale(1.07);
+  filter:saturate(1.08);
+}
+
+/* Tarjeta limpia */
+.producto-info{
+  gap:10px;
+}
+.categoria-tag{
+  font-size:.65rem;
+  letter-spacing:.2em;
+}
+
+/* Botones más boutique */
+.btn-primary,.btn-carrito,.btn-detalles{
+  font-weight:600;
+  letter-spacing:.3px;
+}
+
+/* Sección testimonios con cards tipo Pinterest */
+.testimonio{
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 18px 36px rgba(62,47,28,.12);
+}
+
+/* Trust list más minimal */
+.trust-item{
+  background:rgba(255,255,255,.8);
+  border:1px solid var(--border);
+  box-shadow:0 8px 18px rgba(62,47,28,.08);
+}
+
+/* Hover suave global */
+.producto, .testimonio, .assurance-item{
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.producto:hover,
+.testimonio:hover,
+.assurance-item:hover{
+  transform:translateY(-6px);
+  box-shadow:0 26px 50px rgba(62,47,28,.16);
+}
+
+/* Mobile elegante */
+@media (max-width:600px){
+  .hero-min h1{font-size:2.2rem;}
+  .hero-min .lead{font-size:1rem;}
+  .producto{border-radius:18px;}
+}
+
+
+.producto::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(0,0,0,.18));
+  opacity:0;
+  transition:opacity .35s ease;
+}
+.producto:hover::after{opacity:1;}
+.producto{position:relative;}
+
+
 @media (max-width: 600px){
   .header-stack{gap:8px;padding:12px 0;}
   .brand-name{font-size:1.4rem;}
@@ -344,3 +450,4 @@ h1,h2,h3{
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
