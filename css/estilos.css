@@ -333,6 +333,66 @@ h1,h2,h3{
   .testimonios-list{grid-template-columns:repeat(3,1fr);}
 }
 
+/* Ocultar precios en toda la web */
+.precio,
+.carrito-item-precio,
+.carrito-item-subtotal,
+#carrito-subtotal,
+#carrito-envio,
+#carrito-impuestos,
+#carrito-total,
+.carrito-resumen,
+.carrito-total-container{
+  display:none !important;
+}
+
+/* Botones en tarjetas: uno debajo del otro en móvil */
+.acciones{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.acciones .btn-detalles,
+.acciones .btn-carrito{
+  flex:1 1 100%;
+}
+
+@media (min-width: 700px){
+  .acciones .btn-detalles,
+  .acciones .btn-carrito{
+    flex:1;
+  }
+}
+
+.center{
+  margin-top:22px;
+  display:flex;
+  justify-content:center;
+}
+.center .btn-primary{
+  max-width:320px;
+  width:100%;
+}
+
+:root{
+  --accent: #F4B400;
+  --accent-2: #E67E22;
+  --bg: #F8F3E7;
+  --bg-2: #EFE6D5;
+  --surface: #FFFDF7;
+  --border: #E8DBC6;
+  --text: #3E2F1C;
+  --text-2: #5F5F5F;
+}
+
+.btn-detalles,.btn-carrito{
+  background: linear-gradient(180deg, #F7C437 0%, #E6A100 100%);
+  border-radius:999px;
+  padding:12px;
+  font-weight:600;
+}
+
+
 /* ====== ESTILO EDITORIAL / PINTEREST ====== */
 
 /* Tipografía más elegante */
@@ -450,4 +510,5 @@ h1, h2, h3 {
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
 
