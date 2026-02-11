@@ -148,15 +148,6 @@
   import { db } from "./js/firebase.js";
   import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const modal = document.getElementById("producto-modal");
-  const modalImagen = document.getElementById("modal-imagen");
-  const modalCategoria = document.getElementById("modal-categoria");
-  const modalTitulo = document.getElementById("modal-title");
-  const modalDescripcion = document.getElementById("modal-descripcion");
-  const modalPrecio = document.getElementById("modal-precio");
-  const btnModalAgregar = document.getElementById("modal-agregar");
-  let productoActual = null;
-
   function parsePrecio(val) {
     if (val === null || val === undefined) return 0;
     if (typeof val === "number") return val;
@@ -182,49 +173,15 @@
       id,
       Nombre: data.Nombre || data.nombre || data.name || "",
       Precio: parsePrecio(data.Precio ?? data.precio ?? data.price ?? 0),
-      categoria: (data.categoria || data.Categoria || data.category || "general").toLowerCase(),
+      categoria: (data.categoria || data.Categoria || data.category || "General"),
       imagen: resolverImagen(data.imagen || data.image || data.img || ""),
       descripcion: data.descripcion || data.Descripcion || data.description || ""
     };
   }
 
-  function abrirModal(p) {
-    const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
-    modalImagen.src = img;
-    modalImagen.alt = p.Nombre || "Producto";
-    modalCategoria.textContent = p.categoria || "General";
-    modalTitulo.textContent = p.Nombre || "";
-    modalDescripcion.textContent = p.descripcion || "Sin descripcion.";
-    modalPrecio.textContent = "$" + (p.Precio || 0).toFixed(2);
-    productoActual = p;
-    modal.classList.add("activo");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-
-  function cerrarModal() {
-    modal.classList.remove("activo");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  document.getElementById("modal-cerrar").addEventListener("click", cerrarModal);
-  modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModal(); });
-
-  btnModalAgregar.addEventListener("click", () => {
-    if (!productoActual) return;
-    agregarAlCarrito(
-      productoActual.id,
-      productoActual.Nombre || "",
-      productoActual.Precio || 0,
-      productoActual.imagen || ""
-    );
-    cerrarModal();
-  });
+  const contenedor = document.getElementById("destacados");
 
   async function cargarDestacados() {
-    const contenedor = document.getElementById("destacados");
     try {
       const snapshot = await getDocs(collection(db, "productos"));
       contenedor.innerHTML = "";
@@ -233,12 +190,12 @@
       snapshot.forEach((doc) => {
         if (count >= 4) return;
         const p = normalizarProducto(doc.data(), doc.id);
-        const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+        const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
 
         const card = document.createElement("div");
         card.className = "producto";
         card.innerHTML = `
-          <img src="${imagenFinal}" alt="${p.Nombre}" class="producto-img" loading="lazy"
+          <img src="${img}" alt="${p.Nombre}" class="producto-img" loading="lazy"
                onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
           <div class="producto-info">
             <span class="categoria-tag">${p.categoria || "General"}</span>
@@ -268,12 +225,14 @@
 </script>
 
 
+
   <script type="module" src="js/carrito.js"></script>
   <script src="js/ui.js"></script>
   <script type="module" src="js/productos.js"></script>
 
 </body>
 </html>
+
 
 
 
