@@ -230,7 +230,11 @@
         snapshot.forEach((doc) => {
           if (count >= 4) return;
           const p = normalizarProducto(doc.data(), doc.id);
-          const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+
+          // Filtra productos sin imagen o sin precio válido
+          if (!p.imagen || p.Precio <= 0) return;
+
+          const img = p.imagen;
 
           const card = document.createElement("div");
           card.className = "producto";
