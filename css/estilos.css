@@ -305,6 +305,125 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   background: var(--surface-2);
   z-index: 2;
 }
+/* === CARRITO: Diseño limpio y premium === */
+#carrito-sidebar{
+  width: min(420px, 92vw);
+  background: var(--surface);
+  box-shadow: -18px 0 40px rgba(0,0,0,.18);
+  display: flex;
+  flex-direction: column;
+}
+
+.carrito-header{
+  padding: 18px;
+  border-bottom: 1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.carrito-header h2{
+  font-size:1.4rem;
+  margin:0;
+}
+
+.carrito-close{
+  border:none;
+  background:var(--surface-2);
+  width:32px;height:32px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+#carrito-items{
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  overflow:auto;
+  flex:1;
+}
+
+.carrito-item{
+  display:grid;
+  grid-template-columns:60px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--surface);
+}
+
+.carrito-item-img{
+  width:60px;height:60px;border-radius:10px;object-fit:cover;
+}
+
+.carrito-item-info h4{
+  font-size:.95rem;
+  margin:0 0 6px 0;
+}
+
+.carrito-item-precio{
+  font-weight:600;
+  color:var(--accent-2);
+  margin:0 0 6px 0;
+}
+
+.carrito-item-cantidad{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.btn-cantidad{
+  width:28px;height:28px;border-radius:8px;
+}
+
+.carrito-item-acciones{
+  text-align:right;
+  min-width:70px;
+}
+
+.carrito-item-subtotal{
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.btn-eliminar{
+  border:none;
+  background:#f3d0c8;
+  color:#7a1f12;
+  border-radius:8px;
+  padding:4px 8px;
+  cursor:pointer;
+}
+
+#carrito-footer{
+  padding:16px;
+  border-top:1px solid var(--border);
+  background:var(--surface-2);
+}
+
+.carrito-resumen-linea{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin:6px 0;
+  font-size:.95rem;
+}
+
+.carrito-total-container{
+  display:flex;
+  justify-content:space-between;
+  font-weight:700;
+  margin:10px 0 12px;
+}
+
+.carrito-acciones{
+  display:grid;
+  gap:8px;
+}
 
 
 @media (max-width: 600px){
@@ -318,4 +437,5 @@ h1,h2,h3{font-family:"Cormorant Garamond", serif; letter-spacing: .2px}
   .hero-cta .btn-primary, .hero-cta .btn-ghost{width:100%;text-align:center;}
   .grid{grid-template-columns:1fr;}
 }
+
 
