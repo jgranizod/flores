@@ -4,41 +4,32 @@
    Variables (Light / Dark)
 ========================= */
 :root{
-  /* Light (premium cálido) */
   --bg: #F7F3EA;
   --bg-2: #EFE6D5;
   --card: #FFFFFF;
   --border: #E4D8C7;
-
   --text: #3B2E22;
   --muted: #6B5C4F;
-
-  --accent: #D9A441;        /* dorado */
-  --accent-hover: #C7922F;  /* dorado más oscuro */
+  --accent: #D9A441;
+  --accent-hover: #C7922F;
   --accent-soft: rgba(217, 164, 65, 0.18);
-
   --shadow: 0 10px 24px rgba(0,0,0,.08);
   --shadow-soft: 0 6px 16px rgba(0,0,0,.06);
-
   --radius: 16px;
   --radius-lg: 26px;
   --radius-pill: 999px;
 }
 
 body.modo-oscuro{
-  /* Dark (no negro puro, cálido) */
   --bg: #1E1610;
   --bg-2: #2A1F17;
   --card: #241A13;
   --border: rgba(255,255,255,.10);
-
   --text: #F5EBDD;
   --muted: #C9B8A3;
-
   --accent: #D9A441;
   --accent-hover: #C7922F;
   --accent-soft: rgba(217, 164, 65, 0.16);
-
   --shadow: 0 14px 32px rgba(0,0,0,.45);
   --shadow-soft: 0 10px 24px rgba(0,0,0,.35);
 }
@@ -56,7 +47,6 @@ body{
 }
 h1,h2,h3{font-family:"Playfair Display", serif;letter-spacing:.2px}
 a{color:inherit;text-decoration:none}
-
 .container{max-width:1200px;margin:0 auto;padding:0 20px}
 .section{padding:40px 0}
 
@@ -70,14 +60,12 @@ a{color:inherit;text-decoration:none}
   backdrop-filter: blur(6px);
 }
 .header-stack{display:flex;flex-direction:column;gap:12px;padding:14px 0}
-
 .brand{display:flex;gap:10px;align-items:center}
 .brand-name{
   font-size:1.6rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase
 }
 .brand-sub{font-size:.85rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-
 .brand-logo{
   width:34px;height:34px;object-fit:contain;
   background:#FBF8F2;border-radius:50%;
@@ -125,7 +113,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* =========================
-   Hero minimal
+   Hero
 ========================= */
 .hero-min{padding:34px 0 20px}
 .hero-min .container{max-width:780px}
@@ -137,7 +125,7 @@ a{color:inherit;text-decoration:none}
 .hero-min .lead{color:var(--muted);margin-bottom:16px}
 
 /* =========================
-   Destacados
+   Section head
 ========================= */
 .section-head.alt h1,.section-head.alt h2{font-size:2rem}
 .section-head.alt p{color:var(--muted);max-width:640px}
@@ -162,7 +150,6 @@ a{color:inherit;text-decoration:none}
 }
 .filtro-precio{display:flex;align-items:center;gap:10px}
 .resultados-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-
 .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .filtro-btn{
   border:1px solid var(--border);
@@ -176,7 +163,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* =========================
-   Grid + Masonry (Pinterest)
+   Grid + Masonry
 ========================= */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
 .catalogo-grid{
@@ -215,7 +202,6 @@ a{color:inherit;text-decoration:none}
   display:inline-block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)
 }
 .precio{color:var(--accent);font-weight:700;font-size:1.05rem}
-
 .btn-carrito,.btn-detalles{
   background:linear-gradient(180deg,#F7C437 0%,#E6A100 100%);
   color:#fff;border:none;border-radius:var(--radius-pill);
@@ -240,7 +226,14 @@ a{color:inherit;text-decoration:none}
   box-shadow:var(--shadow);
 }
 .modal-body{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;padding:22px}
-.modal-img{width:100%;height:360px;object-fit:cover;border-radius:14px}
+.modal-img{
+  width:100%;
+  height:55vh;
+  max-height:520px;
+  object-fit:contain;
+  background:#f4ede1;
+  border-radius:12px;
+}
 .modal-close{
   position:absolute;right:16px;top:12px;background:var(--bg-2);
   border:none;border-radius:50%;width:36px;height:36px
@@ -269,6 +262,63 @@ a{color:inherit;text-decoration:none}
 .btn-cantidad{border:1px solid var(--border);background:var(--card);border-radius:8px;width:28px;height:28px}
 
 /* =========================
+   Reviews
+========================= */
+.reviews-section{margin-top:10px}
+.reviews-slider{
+  position:relative;
+  overflow:hidden;
+  min-height:160px;
+}
+.review-card{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:18px;
+  border-radius:14px;
+  box-shadow:var(--shadow-soft);
+  text-align:center;
+  transition:opacity .4s ease;
+}
+.review-card.active{display:block}
+.review-stars{color:var(--accent);font-size:1.2rem;margin-bottom:8px}
+.review-dots{
+  display:flex;gap:8px;justify-content:center;margin-top:10px
+}
+.review-dots span{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);cursor:pointer
+}
+.review-dots span.active{background:var(--accent)}
+
+/* =========================
+   Texto largo
+========================= */
+.info-bloque{background:var(--card);padding:22px;border-radius:16px;box-shadow:var(--shadow-soft)}
+.info-bloque h2{margin-bottom:8px}
+.info-bloque p{color:var(--muted);margin-bottom:10px}
+.razones{padding-left:18px;color:var(--text)}
+.razones li{margin-bottom:6px}
+
+/* =========================
+   Collage
+========================= */
+.collage-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.collage-item{
+  overflow:hidden;border-radius:14px;
+  box-shadow:var(--shadow-soft);cursor:pointer;
+}
+.collage-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .3s ease;
+}
+.collage-item:hover img{transform:scale(1.05)}
+
+/* =========================
    Assurances
 ========================= */
 .assurances{padding-top:8px}
@@ -287,26 +337,12 @@ a{color:inherit;text-decoration:none}
 .assurance-item p{color:var(--muted);font-size:.95rem}
 
 /* =========================
-   FAQ + Reviews
-========================= */
-.faq{margin-top:18px}
-.faq-item{padding:14px 0;border-bottom:1px solid var(--border)}
-.faq-item:last-child{border-bottom:0}
-.faq-q{font-weight:600}
-
-.reviews{margin-top:16px}
-.review-card{
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:14px;box-shadow:var(--shadow-soft)
-}
-
-/* =========================
    Footer
 ========================= */
 .footer{text-align:center;padding:24px;color:var(--muted)}
 
 /* =========================
-   FAB WhatsApp
+   WhatsApp FAB
 ========================= */
 .wa-fab{
   position:fixed;right:16px;bottom:16px;z-index:999;
@@ -316,7 +352,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* =========================
-   Ocultar precios (UI)
+   Ocultar precios
 ========================= */
 .precio, .precio-container,
 #carrito-subtotal, #carrito-envio, #carrito-impuestos, #carrito-total,
@@ -340,4 +376,11 @@ a{color:inherit;text-decoration:none}
 }
 @media (min-width: 1024px){
   .catalogo-grid{column-count:3}
+}
+
+/* 2 columnas en móvil */
+@media (max-width: 640px){
+  .grid{grid-template-columns:repeat(2,1fr) !important;}
+  .collage-grid{grid-template-columns:repeat(2,1fr);}
+  .modal-img{height:42vh;max-height:340px;}
 }
