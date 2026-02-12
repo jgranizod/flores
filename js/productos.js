@@ -268,4 +268,4 @@ if (!contenedor) {
   }, () => {
     contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
   });
-}
+
