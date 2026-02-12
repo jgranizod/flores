@@ -135,19 +135,19 @@ if (!contenedor) {
       const nombre = p.Nombre || "";
       const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
 
-      card.innerHTML = `
-        <img src="${imagenFinal}" alt="${nombre}" class="producto-img" loading="lazy"
-             onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
-        <div class="producto-info">
-          <span class="categoria-tag">${p.categoria || "general"}</span>
-          <h3>${nombre}</h3>
-          <div class="precio-container"><span class="precio">$${(p.Precio || 0).toFixed(2)}</span></div>
-          <div class="producto-acciones">
-            <button class="btn-detalles">Ver detalles</button>
-            <button class="btn-carrito">Cotizar este arreglo</button>
-          </div>
-        </div>
-      `;
+ card.innerHTML = `
+  <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
+       onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+  <div class="producto-info">
+    <span class="categoria-tag">${p.categoria || "general"}</span>
+    <div class="producto-acciones">
+      <button class="btn-detalles">Ver detalles</button>
+      <button class="btn-carrito">Cotizar este arreglo</button>
+    </div>
+  </div>
+`;
+
+
 
       const img = card.querySelector(".producto-img");
       if (img) img.addEventListener("click", () => abrirModal(p));
