@@ -46,7 +46,6 @@ function normalizarProducto(data, id) {
   const descripcion = pickField(data, ["descripcion", "description", "desc"]);
   const tagsRaw = pickField(data, ["tags", "keywords"]);
 
-  // tags pueden venir como array o string "tag1, tag2"
   let tags = [];
   if (Array.isArray(tagsRaw)) {
     tags = tagsRaw.map(t => String(t).trim().toLowerCase());
@@ -89,9 +88,9 @@ if (!contenedor) {
   function abrirModal(p) {
     const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
     modalImagen.src = imagenFinal;
-    modalImagen.alt = p.Nombre || "Producto";
+    modalImagen.alt = "Producto";
     modalCategoria.textContent = p.categoria || "general";
-    modalTitulo.textContent = "";
+    modalTitulo.textContent = ""; // ocultar nombre
     modalDescripcion.textContent = p.descripcion || "Sin descripcion.";
     modalPrecio.textContent = "$" + (p.Precio || 0).toFixed(2);
     productoActual = { ...p, imagen: imagenFinal };
@@ -142,22 +141,19 @@ if (!contenedor) {
       const card = document.createElement("div");
       card.className = "producto";
 
-      const nombre = p.Nombre || "";
       const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
 
- card.innerHTML = `
-  <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
-       onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
-  <div class="producto-info">
-    <span class="categoria-tag">${p.categoria || "general"}</span>
-    <div class="producto-acciones">
-      <button class="btn-detalles">Ver detalles</button>
-      <button class="btn-carrito">Cotizar este arreglo</button>
-    </div>
-  </div>
-`;
-
-
+      card.innerHTML = `
+        <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+        <div class="producto-info">
+          <span class="categoria-tag">${p.categoria || "general"}</span>
+          <div class="producto-acciones">
+            <button class="btn-detalles">Ver detalles</button>
+            <button class="btn-carrito">Cotizar este arreglo</button>
+          </div>
+        </div>
+      `;
 
       const img = card.querySelector(".producto-img");
       if (img) img.addEventListener("click", () => abrirModal(p));
@@ -171,7 +167,7 @@ if (!contenedor) {
       const btnCotizar = card.querySelector(".btn-carrito");
       if (btnCotizar) btnCotizar.addEventListener("click", (e) => {
         e.stopPropagation();
-        const mensaje = `Hola, me interesa este arreglo: ${p.Nombre || "Producto"}. ¿Me podrías cotizar?`;
+        const mensaje = `Hola, me interesa este arreglo. ¿Me podrías cotizar?`;
         const url = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(mensaje);
         window.open(url, "_blank");
       });
@@ -185,19 +181,19 @@ if (!contenedor) {
     if (categoriaActual !== "todos") {
       filtrados = filtrados.filter((p) => (p.categoria || "").toLowerCase() === categoriaActual);
     }
-   if (textoBusqueda) {
-  filtrados = filtrados.filter((p) => {
-    const base = [
-      p.Nombre,
-      p.descripcion,
-      p.categoria,
-      ...(p.tags || [])
-    ].join(" ");
-    return base.toLowerCase().includes(textoBusqueda);
-  });
-}
 
+    if (textoBusqueda) {
+      filtrados = filtrados.filter((p) => {
+        const base = [
+          p.Nombre,
+          p.descripcion,
+          p.categoria,
+          ...(p.tags || [])
+        ].join(" ");
+        return base.toLowerCase().includes(textoBusqueda);
+      });
     }
+
     filtrados = filtrados.filter((p) => (p.Precio || 0) <= precioMax);
     filtrados = ordenarProductos(filtrados);
     mostrarProductos(filtrados);
@@ -268,4 +264,4 @@ if (!contenedor) {
   }, () => {
     contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
   });
-
+}
