@@ -378,36 +378,6 @@ a{color:inherit;text-decoration:none}
   .catalogo-grid{column-count:3}
 }
 
-/* Collage controlado (sin click) */
-.collage-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-.collage-item{
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:var(--shadow-soft);
-  pointer-events:none; /* ✅ no permite click */
-}
-.collage-item img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-/* tamaños */
-.collage-item{height:220px;}
-.collage-item.tall{height:320px;}
-.collage-item.wide{height:260px;}
-
-@media (max-width: 900px){
-  .collage-grid{grid-template-columns:repeat(2,1fr);}
-  .collage-item{height:200px;}
-  .collage-item.tall{height:260px;}
-  .collage-item.wide{height:220px;}
-}
 
 
 /* 2 columnas en móvil */
@@ -416,4 +386,5 @@ a{color:inherit;text-decoration:none}
   .collage-grid{grid-template-columns:repeat(2,1fr);}
   .modal-img{height:42vh;max-height:340px;}
 }
+
 
