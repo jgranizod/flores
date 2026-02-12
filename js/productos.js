@@ -44,6 +44,15 @@ function normalizarProducto(data, id) {
   const imagen = pickField(data, ["imagen", "image", "img", "foto"]);
   const stock = pickField(data, ["stock"]);
   const descripcion = pickField(data, ["descripcion", "description", "desc"]);
+  const tagsRaw = pickField(data, ["tags", "keywords"]);
+
+  // tags pueden venir como array o string "tag1, tag2"
+  let tags = [];
+  if (Array.isArray(tagsRaw)) {
+    tags = tagsRaw.map(t => String(t).trim().toLowerCase());
+  } else if (typeof tagsRaw === "string") {
+    tags = tagsRaw.split(",").map(t => t.trim().toLowerCase()).filter(Boolean);
+  }
 
   return {
     id,
@@ -52,7 +61,8 @@ function normalizarProducto(data, id) {
     categoria: (categoria ? String(categoria) : "general").trim().toLowerCase(),
     imagen: resolverImagen(imagen || ""),
     stock: stock ?? 0,
-    descripcion: descripcion ? String(descripcion).trim() : ""
+    descripcion: descripcion ? String(descripcion).trim() : "",
+    tags
   };
 }
 
