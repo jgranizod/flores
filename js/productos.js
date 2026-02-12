@@ -185,8 +185,18 @@ if (!contenedor) {
     if (categoriaActual !== "todos") {
       filtrados = filtrados.filter((p) => (p.categoria || "").toLowerCase() === categoriaActual);
     }
-    if (textoBusqueda) {
-      filtrados = filtrados.filter((p) => (p.Nombre || "").toLowerCase().includes(textoBusqueda));
+   if (textoBusqueda) {
+  filtrados = filtrados.filter((p) => {
+    const base = [
+      p.Nombre,
+      p.descripcion,
+      p.categoria,
+      ...(p.tags || [])
+    ].join(" ");
+    return base.toLowerCase().includes(textoBusqueda);
+  });
+}
+
     }
     filtrados = filtrados.filter((p) => (p.Precio || 0) <= precioMax);
     filtrados = ordenarProductos(filtrados);
