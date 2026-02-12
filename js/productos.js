@@ -81,7 +81,7 @@ if (!contenedor) {
     modalImagen.src = imagenFinal;
     modalImagen.alt = p.Nombre || "Producto";
     modalCategoria.textContent = p.categoria || "general";
-    modalTitulo.textContent = p.Nombre || "";
+    modalTitulo.textContent = "";
     modalDescripcion.textContent = p.descripcion || "Sin descripcion.";
     modalPrecio.textContent = "$" + (p.Precio || 0).toFixed(2);
     productoActual = { ...p, imagen: imagenFinal };
