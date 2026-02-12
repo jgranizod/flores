@@ -254,43 +254,51 @@
 
     const contenedor = document.getElementById("destacados");
 
-    async function cargarDestacados() {
-      try {
-        const snapshot = await getDocs(collection(db, "productos"));
-        contenedor.innerHTML = "";
+ async function cargarDestacados() {
+  try {
+    const snapshot = await getDocs(collection(db, "productos"));
+    contenedor.innerHTML = "";
 
-        let count = 0;
-        snapshot.forEach((doc) => {
-          if (count >= 4) return;
-          const p = normalizarProducto(doc.data(), doc.id);
-          const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+    const productos = [];
+    snapshot.forEach((doc) => {
+      const p = normalizarProducto(doc.data(), doc.id);
+      if (p.imagen) productos.push(p); // solo con imagen
+    });
 
-          const card = document.createElement("div");
-          card.className = "producto";
-          card.innerHTML = `
-            <img src="${img}" alt="${p.Nombre}" class="producto-img" loading="lazy"
-                 onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
-            <div class="producto-info">
-              <span class="categoria-tag">${p.categoria || "General"}</span>
-              <h3>${p.Nombre}</h3>
-              <button class="btn-detalles">Ver detalles</button>
-            </div>
-          `;
-          card.querySelector(".btn-detalles").addEventListener("click", (e) => {
-            e.stopPropagation();
-            abrirModal(p);
-          });
-          contenedor.appendChild(card);
-          count++;
-        });
+    // mezclar aleatorio
+    productos.sort(() => Math.random() - 0.5);
 
-        if (count === 0) {
-          contenedor.innerHTML = '<p class="loading">No hay productos disponibles</p>';
-        }
-      } catch {
-        contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
-      }
+    const destacados = productos.slice(0, 3);
+    destacados.forEach((p) => {
+      const img = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+
+      const card = document.createElement("div");
+      card.className = "producto";
+      card.innerHTML = `
+        <img src="${img}" alt="${p.Nombre}" class="producto-img" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+        <div class="producto-info">
+          <span class="categoria-tag">${p.categoria || "General"}</span>
+          <h3>${p.Nombre}</h3>
+          <button class="btn-detalles">Ver detalles</button>
+        </div>
+      `;
+      card.querySelector(".btn-detalles").addEventListener("click", (e) => {
+        e.stopPropagation();
+        abrirModal(p);
+      });
+
+      contenedor.appendChild(card);
+    });
+
+    if (destacados.length === 0) {
+      contenedor.innerHTML = '<p class="loading">No hay productos disponibles</p>';
     }
+  } catch {
+    contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
+  }
+}
+
 
     function abrirModal(p) {
       document.getElementById("modal-imagen").src = p.imagen || "";
@@ -355,4 +363,5 @@
   </script>
 </body>
 </html>
+
 
