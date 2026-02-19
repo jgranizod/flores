@@ -42,9 +42,9 @@ function normalizarProducto(data, id) {
   const precio = pickField(data, ["precio", "price", "valor", "costo"]);
   const categoria = pickField(data, ["categoria", "category", "tipo"]);
   const imagen = pickField(data, ["imagen", "image", "img", "foto"]);
-  const stock = pickField(data, ["stock"]);
   const descripcion = pickField(data, ["descripcion", "description", "desc"]);
   const tagsRaw = pickField(data, ["tags", "keywords"]);
+  const codigo = pickField(data, ["codigo", "code", "sku", "id_producto"]);
 
   let tags = [];
   if (Array.isArray(tagsRaw)) {
@@ -55,11 +55,11 @@ function normalizarProducto(data, id) {
 
   return {
     id,
+    codigo: codigo ? String(codigo).trim() : "",
     Nombre: nombre ? String(nombre).trim() : "",
     Precio: parsePrecio(precio),
     categoria: (categoria ? String(categoria) : "general").trim().toLowerCase(),
     imagen: resolverImagen(imagen || ""),
-    stock: stock ?? 0,
     descripcion: descripcion ? String(descripcion).trim() : "",
     tags
   };
@@ -73,13 +73,6 @@ if (!contenedor) {
   let textoBusqueda = "";
   let precioMax = 200;
   let ordenActual = "nuevo";
-  let productoActual = null;
-
-
-
-
-  }
-
 
   function ordenarProductos(lista) {
     const copia = lista.slice();
@@ -100,37 +93,40 @@ if (!contenedor) {
       card.className = "producto";
 
       const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
+      const desc = p.descripcion ? `<p class="producto-desc">${p.descripcion}</p>` : "";
 
-     const desc = p.descripcion ? `<p class="producto-desc">${p.descripcion}</p>` : "";
+      card.innerHTML = `
+        <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+        <div class="producto-info">
+          <span class="categoria-tag">${p.categoria || "general"}</span>
+          ${desc}
+          <div class="producto-acciones">
+            <button class="btn-carrito">Cotizar este arreglo</button>
+          </div>
+        </div>
+      `;
 
-card.innerHTML = `
-  <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
-       onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
-  <div class="producto-info">
-    <span class="categoria-tag">${p.categoria || "general"}</span>
-    ${desc}
-    <div class="producto-acciones">
-      <button class="btn-carrito">Cotizar este arreglo</button>
-    </div>
-  </div>
-`;
-
-
-  const img = card.querySelector(".producto-img");
-if (img) img.addEventListener("click", () => {
-  const modal = document.getElementById("foto-modal");
-  const foto = document.getElementById("foto-grande");
-  foto.src = imagenFinal;
-  modal.classList.add("activo");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-});
-
+      const img = card.querySelector(".producto-img");
+      if (img) img.addEventListener("click", () => {
+        const modal = document.getElementById("foto-modal");
+        const foto = document.getElementById("foto-grande");
+        if (!modal || !foto) return;
+        foto.src = imagenFinal;
+        modal.classList.add("activo");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
 
       const btnCotizar = card.querySelector(".btn-carrito");
       if (btnCotizar) btnCotizar.addEventListener("click", (e) => {
         e.stopPropagation();
-        const mensaje = `Hola, me interesa este arreglo. ¿Me podrías cotizar?`;
+        const codigo = p.codigo || p.id || "sin-codigo";
+        const mensaje = `Hola, me interesa este arreglo.
+Código: ${codigo}
+Categoría: ${p.categoria || "general"}
+
+¿Me podrías cotizar?`;
         const url = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(mensaje);
         window.open(url, "_blank");
       });
@@ -160,32 +156,7 @@ if (img) img.addEventListener("click", () => {
     filtrados = filtrados.filter((p) => (p.Precio || 0) <= precioMax);
     filtrados = ordenarProductos(filtrados);
     mostrarProductos(filtrados);
-
-    if (resultCount) {
-      const n = filtrados.length;
-      resultCount.textContent = n === 1 ? "1 producto" : `${n} productos`;
-    }
   }
-
-const fotoModal = document.getElementById("foto-modal");
-const fotoCerrar = document.getElementById("foto-cerrar");
-if (fotoCerrar) {
-  fotoCerrar.addEventListener("click", () => {
-    fotoModal.classList.remove("activo");
-    fotoModal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  });
-}
-if (fotoModal) {
-  fotoModal.addEventListener("click", (e) => {
-    if (e.target === fotoModal) {
-      fotoModal.classList.remove("activo");
-      fotoModal.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-    }
-  });
-}
-
 
   window.filtrar = function(categoria, event) {
     categoriaActual = categoria;
@@ -218,13 +189,13 @@ if (fotoModal) {
     });
   }
 
+  const btnLimpiar = document.getElementById("limpiar-filtros");
   if (btnLimpiar) {
     btnLimpiar.addEventListener("click", () => {
       categoriaActual = "todos";
       textoBusqueda = "";
       precioMax = 200;
       ordenActual = "nuevo";
-
       if (buscador) buscador.value = "";
       if (precioInput) precioInput.value = 200;
       if (precioLabel) precioLabel.textContent = "$200";
@@ -247,4 +218,24 @@ if (fotoModal) {
   }, () => {
     contenedor.innerHTML = '<p class="loading">Error al cargar productos</p>';
   });
+
+  // cerrar modal foto
+  const fotoModal = document.getElementById("foto-modal");
+  const fotoCerrar = document.getElementById("foto-cerrar");
+  if (fotoCerrar) {
+    fotoCerrar.addEventListener("click", () => {
+      fotoModal.classList.remove("activo");
+      fotoModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    });
+  }
+  if (fotoModal) {
+    fotoModal.addEventListener("click", (e) => {
+      if (e.target === fotoModal) {
+        fotoModal.classList.remove("activo");
+        fotoModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+    });
+  }
 }
