@@ -75,53 +75,11 @@ if (!contenedor) {
   let ordenActual = "nuevo";
   let productoActual = null;
 
-  const modal = document.getElementById("producto-modal");
-  const modalImagen = document.getElementById("modal-imagen");
-  const modalCategoria = document.getElementById("modal-categoria");
-  const modalTitulo = document.getElementById("modal-title");
-  const modalDescripcion = document.getElementById("modal-descripcion");
-  const modalPrecio = document.getElementById("modal-precio");
-  const btnModalAgregar = document.getElementById("modal-agregar");
-  const resultCount = document.getElementById("result-count");
-  const btnLimpiar = document.getElementById("limpiar-filtros");
 
-  function abrirModal(p) {
-    const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
-    modalImagen.src = imagenFinal;
-    modalImagen.alt = "Producto";
-    modalCategoria.textContent = p.categoria || "general";
-    modalTitulo.textContent = ""; // ocultar nombre
-    modalDescripcion.textContent = p.descripcion || "Sin descripcion.";
-    modalPrecio.textContent = "$" + (p.Precio || 0).toFixed(2);
-    productoActual = { ...p, imagen: imagenFinal };
-    modal.classList.add("activo");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+
+
   }
 
-  function cerrarModal() {
-    modal.classList.remove("activo");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  const btnCerrar = document.getElementById("modal-cerrar");
-  if (btnCerrar) btnCerrar.addEventListener("click", cerrarModal);
-  if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModal(); });
-
-  if (btnModalAgregar) {
-    btnModalAgregar.addEventListener("click", () => {
-      if (!productoActual) return;
-      agregarAlCarrito(
-        productoActual.id,
-        productoActual.Nombre || "",
-        productoActual.Precio || 0,
-        productoActual.imagen || ""
-      );
-      cerrarModal();
-    });
-  }
 
   function ordenarProductos(lista) {
     const copia = lista.slice();
@@ -143,26 +101,31 @@ if (!contenedor) {
 
       const imagenFinal = p.imagen || "https://via.placeholder.com/280?text=Sin+Imagen";
 
-      card.innerHTML = `
-        <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
-             onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
-        <div class="producto-info">
-          <span class="categoria-tag">${p.categoria || "general"}</span>
-          <div class="producto-acciones">
-            <button class="btn-detalles">Ver detalles</button>
-            <button class="btn-carrito">Cotizar este arreglo</button>
-          </div>
-        </div>
-      `;
+     const desc = p.descripcion ? `<p class="producto-desc">${p.descripcion}</p>` : "";
 
-      const img = card.querySelector(".producto-img");
-      if (img) img.addEventListener("click", () => abrirModal(p));
+card.innerHTML = `
+  <img src="${imagenFinal}" alt="Arreglo" class="producto-img" loading="lazy"
+       onerror="this.src='https://via.placeholder.com/280?text=Sin+Imagen'">
+  <div class="producto-info">
+    <span class="categoria-tag">${p.categoria || "general"}</span>
+    ${desc}
+    <div class="producto-acciones">
+      <button class="btn-carrito">Cotizar este arreglo</button>
+    </div>
+  </div>
+`;
 
-      const btnDetalles = card.querySelector(".btn-detalles");
-      if (btnDetalles) btnDetalles.addEventListener("click", (e) => {
-        e.stopPropagation();
-        abrirModal(p);
-      });
+
+  const img = card.querySelector(".producto-img");
+if (img) img.addEventListener("click", () => {
+  const modal = document.getElementById("foto-modal");
+  const foto = document.getElementById("foto-grande");
+  foto.src = imagenFinal;
+  modal.classList.add("activo");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+});
+
 
       const btnCotizar = card.querySelector(".btn-carrito");
       if (btnCotizar) btnCotizar.addEventListener("click", (e) => {
@@ -203,6 +166,26 @@ if (!contenedor) {
       resultCount.textContent = n === 1 ? "1 producto" : `${n} productos`;
     }
   }
+
+const fotoModal = document.getElementById("foto-modal");
+const fotoCerrar = document.getElementById("foto-cerrar");
+if (fotoCerrar) {
+  fotoCerrar.addEventListener("click", () => {
+    fotoModal.classList.remove("activo");
+    fotoModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  });
+}
+if (fotoModal) {
+  fotoModal.addEventListener("click", (e) => {
+    if (e.target === fotoModal) {
+      fotoModal.classList.remove("activo");
+      fotoModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+  });
+}
+
 
   window.filtrar = function(categoria, event) {
     categoriaActual = categoria;
