@@ -121,12 +121,12 @@ if (!contenedor) {
       const btnCotizar = card.querySelector(".btn-carrito");
       if (btnCotizar) btnCotizar.addEventListener("click", (e) => {
         e.stopPropagation();
-        const codigo = p.codigo || p.id || "sin-codigo";
-        const mensaje = `Hola, me interesa este arreglo.
-Código: ${codigo}
-Categoría: ${p.categoria || "general"}
+        const descripcion = p.descripcion || "Arreglo floral";
+const mensaje = `Hola, me interesa este arreglo.
+Descripción: ${descripcion}
 
 ¿Me podrías cotizar?`;
+
         const url = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + encodeURIComponent(mensaje);
         window.open(url, "_blank");
       });
